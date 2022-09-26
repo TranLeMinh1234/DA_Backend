@@ -1,0 +1,15 @@
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\DL.deps.json
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\DL.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\DL.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\Attribute.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\Utilities.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\Attribute.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\bin\Debug\netcoreapp3.1\Utilities.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.csproj.AssemblyReference.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.GeneratedMSBuildEditorConfig.editorconfig
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.AssemblyInfoInputs.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.AssemblyInfo.cs
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.csproj.CoreCompileInputs.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.csproj.CopyComplete
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DL\obj\Debug\netcoreapp3.1\DL.pdb
