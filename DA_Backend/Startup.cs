@@ -1,3 +1,5 @@
+using BL;
+using DL;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,11 @@ namespace DA_Backend
         {
             services.AddControllers();
 
+            //dj
+
+            services.AddScoped<IDLBase,DLBase>();
+            services.AddScoped<IBLBase, BLBase>();
+
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddCors(options => {
@@ -59,7 +66,6 @@ namespace DA_Backend
                     };
                 }
             );
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

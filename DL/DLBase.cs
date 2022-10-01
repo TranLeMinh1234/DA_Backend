@@ -1,29 +1,42 @@
-﻿using System;
+﻿using Attribute;
+using ClassModel.Query.SQLBuilder;
+using Dapper;
+using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using Utilities;
 
 namespace DL
 {
-    public class DLBase : IDLBase
+    public class DLBase : DBContext, IDLBase
     {
-        public int Delete<T>(Guid idRecord, T instanceDelete)
+        public DLBase() : base()
+        { 
+            
+        }
+        public int Delete<T>(Guid idRecord)
         {
-            Type type = instanceDelete.GetType();
+            Type type = typeof(T);
             string tableName = type.Name;
             PropertyInfo primaryKey = ClassUtility.GetPrimaryKeyPropertyOfClass(type);
 
             Dictionary<string, object> paramDelete = new Dictionary<string, object>();
             paramDelete.Add(primaryKey.Name, idRecord);
-            string sqlDelete = $"DELETE FROM {tableName} WHERE {primaryKey.Name} = @{primaryKey.Name}";
+            string sqlDelete = $"DELETE FROM {tableName} WHERE {primaryKey.Name} = @{primaryKey.Name};";
 
-            return 0;
+            return _dbConnection.Execute(sqlDelete, paramDelete, commandType: CommandType.Text);
         }
 
-        public List<object> GetPaging(int start, int take)
+        public Dictionary<string,object> GetPaging(ConditionSqlBuilder conditionSqlBuilder)
         {
-            throw new NotImplementedException();
+            Dictionary<string, object> resultPaging = new Dictionary<string, object>();
+            string sql = conditionSqlBuilder.BuildPagingSql();
+            Dictionary<string, object> param = conditionSqlBuilder.BuildParamCondition();
+
+            return null;
         }
 
         public Guid Insert<T>(T newRecord)
@@ -47,15 +60,49 @@ namespace DL
             stringColumnInsert = stringColumnInsert.Remove(stringColumnInsert.Length - 2);
             stringParamInsert = stringParamInsert.Remove(stringParamInsert.Length - 2);
 
-            string sql = $"INSERT INTO {tableName} ({stringColumnInsert}) VALUES {stringParamInsert};";
+            string sql = $"INSERT INTO {tableName} ({stringColumnInsert}) VALUES ({stringParamInsert});";
 
-
+            _dbConnection.Execute(sql,paramInsert,commandType: CommandType.Text);
             return (Guid)newID;
         }
 
         public Guid Update<T>(T record)
         {
-            throw new NotImplementedException();
+            Type typeRecord = record.GetType();
+            string tableName = record.GetType().Name;
+            PropertyInfo primaryKeyProperty = ClassUtility.GetPrimaryKeyPropertyOfClass(typeRecord);
+            List<string> namePropertiesInsertDb = ClassUtility.GetNamePropertiesInsertDb(typeRecord);
+            Dictionary<string, object> paramInsert = ClassUtility.GetPropertiesInsertDb(typeRecord, record);
+            object idRecord = null;
+            paramInsert.TryGetValue(primaryKeyProperty.Name, out idRecord);
+
+            string stringPairColumnUpdate = "";
+
+            foreach(string nameColumnUpdate in namePropertiesInsertDb)
+            {
+                stringPairColumnUpdate += $" {nameColumnUpdate} = @${nameColumnUpdate},";
+            }
+
+            string sql = $"UPDATE {tableName} SET {stringPairColumnUpdate} WHERE {primaryKeyProperty.Name} = @${primaryKeyProperty.Name}";
+
+            return (Guid)idRecord;
+        }
+
+        public T GetById<T>(Guid recordId)
+        {
+            Type type = typeof(T);
+            string tableName = type.Name;
+            PropertyInfo propertyPrimaryKey = ClassUtility.GetPrimaryKeyPropertyOfClass(type);
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add(propertyPrimaryKey.Name, recordId);
+            string sqlQuery = $"SELECT * FROM {tableName} WHERE {propertyPrimaryKey.Name} = @{propertyPrimaryKey.Name}";
+
+            return _dbConnection.Query<T>(sqlQuery,param, commandType: CommandType.Text).FirstOrDefault();
+        }
+
+        ~DLBase()
+        {
+            _dbConnection.Close();
         }
     }
 }
