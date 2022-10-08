@@ -1,5 +1,11 @@
 using BL;
+using BL.Business;
+using BL.FileAttachment;
+using BL.Interface;
 using DL;
+using DL.Business;
+using DL.DLFile;
+using DL.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -38,9 +44,15 @@ namespace DA_Backend
             services.AddControllers();
 
             //dj
-
+            //DL
             services.AddScoped<IDLBase,DLBase>();
+            services.AddScoped<IDLFileAttachment, DLFileAttachment>();
+            services.AddScoped<IDLLogin, DLLogin>();
+
+            //BL
             services.AddScoped<IBLBase, BLBase>();
+            services.AddScoped<IBLFileAttachment, BLFileAttachment>();
+            services.AddScoped<IBLLogin, BLLogin>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 

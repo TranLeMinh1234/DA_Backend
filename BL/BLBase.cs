@@ -28,15 +28,15 @@ namespace BL
             throw new NotImplementedException();
         }
 
-        public Guid Insert<T>(T newRecord)
+        public Guid? Insert<T>(T newRecord)
         {
-            Guid newId = _dlBase.Insert(newRecord);
+            Guid? newId = _dlBase.Insert(newRecord);
             return newId;
         }
 
-        public Guid Update<T>(T record)
+        public Guid? Update<T>(T record)
         {
-            Guid newId = _dlBase.Update(record);
+            Guid? newId = _dlBase.Update(record);
             return newId;
         }
     }

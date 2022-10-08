@@ -9,9 +9,9 @@ namespace DL
     {
         public Dictionary<string, object> GetPaging(ConditionSqlBuilder conditionSqlBuilder);
 
-        public Guid Insert<T>(T newRecord);
+        public Guid? Insert<T>(T newRecord);
 
-        public Guid Update<T>(T record);
+        public Guid? Update<T>(T record);
 
         public int Delete<T>(Guid idRecord);
 

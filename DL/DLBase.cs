@@ -1,6 +1,7 @@
 ﻿using Attribute;
 using ClassModel.Query.SQLBuilder;
 using Dapper;
+using MySqlX.XDevAPI.Common;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,7 +40,7 @@ namespace DL
             return null;
         }
 
-        public Guid Insert<T>(T newRecord)
+        public Guid? Insert<T>(T newRecord)
         {
             Type typeRecord = newRecord.GetType();
             string tableName = newRecord.GetType().Name;
@@ -62,11 +63,16 @@ namespace DL
 
             string sql = $"INSERT INTO {tableName} ({stringColumnInsert}) VALUES ({stringParamInsert});";
 
-            _dbConnection.Execute(sql,paramInsert,commandType: CommandType.Text);
-            return (Guid)newID;
+            int result = _dbConnection.Execute(sql,paramInsert,commandType: CommandType.Text);
+            if (result != 0)
+            { 
+                return (Guid)newID;
+            }
+            else
+                return null;
         }
 
-        public Guid Update<T>(T record)
+        public Guid? Update<T>(T record)
         {
             Type typeRecord = record.GetType();
             string tableName = record.GetType().Name;
@@ -85,7 +91,14 @@ namespace DL
 
             string sql = $"UPDATE {tableName} SET {stringPairColumnUpdate} WHERE {primaryKeyProperty.Name} = @${primaryKeyProperty.Name}";
 
-            return (Guid)idRecord;
+            int result = _dbConnection.Execute(sql, paramInsert, commandType: CommandType.Text);
+
+            if (result != 0)
+            {
+                return (Guid)idRecord;
+            }
+            else
+                return null;
         }
 
         public T GetById<T>(Guid recordId)

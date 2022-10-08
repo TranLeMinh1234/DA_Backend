@@ -169,8 +169,17 @@ namespace Utilities
 
                 if (typeProperty == 1)
                     propertiesAddDb.Add(property.Name, property.GetValue(recordInsert));
-                else if(typeProperty == 2)
-                    propertiesAddDb.Add(property.Name, Guid.NewGuid());
+                else if (typeProperty == 2)
+                {
+                    object? valuePrimaryKey = property.GetValue(recordInsert);
+                    if (valuePrimaryKey != null)
+                    {
+                        propertiesAddDb.Add(property.Name, valuePrimaryKey);
+                    }
+                    else
+                        propertiesAddDb.Add(property.Name, Guid.NewGuid());
+                    
+                }
             }
 
             return propertiesAddDb;
