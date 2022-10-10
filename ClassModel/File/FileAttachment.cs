@@ -17,5 +17,7 @@ namespace ClassModel.File
         public string FilePath { get; set; }
         [AddDatabase]
         public Guid? AttachmentId { get; set; }
+        [AddDatabase]
+        public int TypeAttachment { get; set; }
     }
 }

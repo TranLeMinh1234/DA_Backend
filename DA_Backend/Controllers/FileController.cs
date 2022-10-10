@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
+using static ClassModel.Enumeration;
 using File = System.IO.File;
 
 namespace DA_Backend.Controllers
@@ -25,7 +26,7 @@ namespace DA_Backend.Controllers
         private string defautPathFileSave = "\\FileUpload";
 
         [HttpPost("upload")]
-        public ServiceResult UploadFile([FromForm]IFormFileCollection formFiles)
+        public ServiceResult UploadFile([FromForm]IFormFileCollection formFiles, [FromForm] EnumAttachment typeAttachment = EnumAttachment.AttachAvatar, [FromForm] Guid? attachmentId = null)
         {
             ServiceResult serviceResult = new ServiceResult();
             try
@@ -58,7 +59,9 @@ namespace DA_Backend.Controllers
                                 FileId = newID,
                                 ExtensionOfFile = extensionFile,
                                 FileName = $"{newID.ToString()}_{formFile.FileName}",
-                                FilePath = saveFileName
+                                FilePath = saveFileName,
+                                AttachmentId = attachmentId,
+                                TypeAttachment = (int)typeAttachment
                             };
                             _iBLFileAttachment.Insert(attachment);
 

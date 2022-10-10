@@ -21,9 +21,7 @@ namespace ClassModel.User
         [AddDatabase]
         public string PassWord { get; set; }
         [AddDatabase]
-        public DateTime DateOfBirth { get; set; }
-        [AddDatabase]
-        public Guid? FileAttachmentId { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         public FileAttachment FileAvatar { get; set; } = null;
         public string PassWordRepeated { get; set; }
     }
