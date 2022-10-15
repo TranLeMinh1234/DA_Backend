@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "LIjVZ3CiswXFcmkYJIRox9pa0Y9USLqk5utQnNKticUE1+GxCFhVQnQJ3PZmHRTkZTgkhevgrdAMZE1T5d3Z8g==",
+  "success": true,
+  "projectFilePath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\silen\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

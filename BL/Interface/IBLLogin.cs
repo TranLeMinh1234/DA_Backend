@@ -9,5 +9,7 @@ namespace BL.Interface
     public interface IBLLogin : IBLBase
     {
         public ServiceResult Register(User newUser);
+
+        public ServiceResult Login(Account account, string keyJwt);
     }
 }

@@ -12,5 +12,12 @@ namespace ClassModel
             AttachTask = 2,
             AttachComment = 3,
         }
+
+        public enum EnumTypeTask
+        {
+            Personal = 1,
+            GroupPersonal = 2,
+            Group = 3
+        }
     }
 }

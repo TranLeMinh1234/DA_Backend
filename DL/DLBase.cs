@@ -86,10 +86,12 @@ namespace DL
 
             foreach(string nameColumnUpdate in namePropertiesInsertDb)
             {
-                stringPairColumnUpdate += $" {nameColumnUpdate} = @${nameColumnUpdate},";
+                stringPairColumnUpdate += $" {nameColumnUpdate} = @{nameColumnUpdate},";
             }
 
-            string sql = $"UPDATE {tableName} SET {stringPairColumnUpdate} WHERE {primaryKeyProperty.Name} = @${primaryKeyProperty.Name}";
+            stringPairColumnUpdate = stringPairColumnUpdate.Remove(stringPairColumnUpdate.Length - 1);
+
+            string sql = $"UPDATE {tableName} SET {stringPairColumnUpdate} WHERE {primaryKeyProperty.Name} = @{primaryKeyProperty.Name}";
 
             int result = _dbConnection.Execute(sql, paramInsert, commandType: CommandType.Text);
 
@@ -111,6 +113,17 @@ namespace DL
             string sqlQuery = $"SELECT * FROM {tableName} WHERE {propertyPrimaryKey.Name} = @{propertyPrimaryKey.Name}";
 
             return _dbConnection.Query<T>(sqlQuery,param, commandType: CommandType.Text).FirstOrDefault();
+        }
+
+        public List<T> GetAll<T>(string email)
+        {
+            Type type = typeof(T);
+            string tableName = type.Name;
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("CreatedByEmail", email);
+            string sqlQuery = $"SELECT * FROM {tableName} WHERE CreatedByEmail = @CreatedByEmail";
+
+            return (List<T>)_dbConnection.Query<T>(sqlQuery, param, commandType: CommandType.Text);
         }
 
         ~DLBase()

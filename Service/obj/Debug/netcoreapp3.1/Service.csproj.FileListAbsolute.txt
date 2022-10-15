@@ -1,0 +1,10 @@
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\Service.deps.json
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\Service.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\Service.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.csproj.AssemblyReference.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.GeneratedMSBuildEditorConfig.editorconfig
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.AssemblyInfoInputs.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.AssemblyInfo.cs
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.csproj.CoreCompileInputs.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.pdb

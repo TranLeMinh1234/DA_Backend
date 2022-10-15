@@ -17,5 +17,7 @@ namespace DL
 
         public T GetById<T>(Guid recordId);
 
+        public List<T> GetAll<T>(string email);
+
     }
 }

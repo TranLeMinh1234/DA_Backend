@@ -51,3 +51,8 @@ E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\obj\Debug\netc
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\obj\Debug\netcoreapp3.1\DA_Backend.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\obj\Debug\netcoreapp3.1\DA_Backend.pdb
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\obj\Debug\netcoreapp3.1\DA_Backend.genruntimeconfig.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\MiddleWare.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\MiddleWare.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Service.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Service.pdb

@@ -1,0 +1,13 @@
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\MiddleWare.deps.json
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\MiddleWare.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\MiddleWare.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.csproj.AssemblyReference.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.GeneratedMSBuildEditorConfig.editorconfig
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.AssemblyInfoInputs.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.AssemblyInfo.cs
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.csproj.CoreCompileInputs.cache
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Service.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Service.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.csproj.CopyComplete

@@ -16,6 +16,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using MiddleWare;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,17 +44,26 @@ namespace DA_Backend
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IConfiguration>(Configuration);
 
             //dj
             //DL
             services.AddScoped<IDLBase,DLBase>();
             services.AddScoped<IDLFileAttachment, DLFileAttachment>();
             services.AddScoped<IDLLogin, DLLogin>();
+            services.AddScoped<IDLLabel, DLLabel>();
+            services.AddScoped<IDLTask, DLTask>();
+            services.AddScoped<IDLUser, DLUser>();
+            services.AddScoped<IDLCheckTask, DLCheckTask>();
 
             //BL
             services.AddScoped<IBLBase, BLBase>();
             services.AddScoped<IBLFileAttachment, BLFileAttachment>();
             services.AddScoped<IBLLogin, BLLogin>();
+            services.AddScoped<IBLLabel, BLLabel>();
+            services.AddScoped<IBLTask, BLTask>();
+            services.AddScoped<IBLUser, BLUser>();
+            services.AddScoped<IBLCheckTask, BLCheckTask>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 
@@ -72,12 +83,14 @@ namespace DA_Backend
                     {
                         ValidateAudience = false,
                         ValidateIssuer = false,
-                        ValidateLifetime = true,
+                        ValidateLifetime = false,
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:KeyLoggin"]))
                     };
                 }
             );
+
+            services.UseContextRequestService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -97,7 +110,9 @@ namespace DA_Backend
             app.UseAuthentication();
 
             app.UseAuthorization();
-            
+
+            app.UseDetectContextMiddleWare();
+
             //app.UseWebSockets();
 
             app.UseEndpoints(endpoints =>

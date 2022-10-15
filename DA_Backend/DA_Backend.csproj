@@ -13,6 +13,8 @@
     <ProjectReference Include="..\BL\BL.csproj" />
     <ProjectReference Include="..\ClassModel\ClassModel.csproj" />
     <ProjectReference Include="..\DL\DL.csproj" />
+    <ProjectReference Include="..\MiddleWare\MiddleWare.csproj" />
+    <ProjectReference Include="..\Service\Service.csproj" />
   </ItemGroup>
 
 

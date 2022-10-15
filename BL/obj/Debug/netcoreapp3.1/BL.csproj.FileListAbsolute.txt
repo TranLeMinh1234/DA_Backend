@@ -17,3 +17,5 @@ E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\BL\obj\Debug\netcoreapp3.
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\BL\obj\Debug\netcoreapp3.1\BL.csproj.CopyComplete
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\BL\obj\Debug\netcoreapp3.1\BL.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\BL\obj\Debug\netcoreapp3.1\BL.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\BL\bin\Debug\netcoreapp3.1\Service.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\BL\bin\Debug\netcoreapp3.1\Service.pdb

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>Service</id>
+    <version>1.0.0</version>
+    <authors>Service</authors>
+    <description>Package Description</description>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\Service.dll" target="lib\netcoreapp3.1\Service.dll" />
+  </files>
+</package>

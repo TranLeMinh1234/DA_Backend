@@ -3,6 +3,7 @@ using ClassModel;
 using ClassModel.File;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,9 +18,11 @@ namespace DA_Backend.Controllers
     public class FileController : BaseController<FileAttachment>
     {
         private IBLFileAttachment _iBLFileAttachment;
-        public FileController(IBLFileAttachment bLFileAttachment) : base(bLFileAttachment)
+        private IConfiguration _configuration;
+        public FileController(IBLFileAttachment bLFileAttachment, IConfiguration configuration) : base(bLFileAttachment, configuration)
         {
             _iBLFileAttachment = bLFileAttachment;
+            _configuration = configuration;
         }
 
         private string fileExtensionAllow = ".jpg,.xlsx,.png";

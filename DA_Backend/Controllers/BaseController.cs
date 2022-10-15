@@ -1,18 +1,24 @@
 ﻿using BL;
 using ClassModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using System;
 
 namespace DA_Backend.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class BaseController<T> : ControllerBase
     {
         protected IBLBase _blBase;
-        public BaseController(IBLBase bLBase) {
+        protected IConfiguration _configuration;
+
+        public BaseController(IBLBase bLBase, IConfiguration configuration) {
             _blBase = bLBase;
+            _configuration = configuration;
         }
 
         [HttpGet("{idRecord}")]
@@ -90,5 +96,19 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
+        [HttpGet("getall")]
+        public IActionResult GetAll()
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _blBase.GetAll<T>();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

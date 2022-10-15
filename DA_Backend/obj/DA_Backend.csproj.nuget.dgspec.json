@@ -88,6 +88,9 @@
               },
               "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\DL\\DL.csproj": {
                 "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\DL\\DL.csproj"
+              },
+              "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj": {
+                "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj"
               }
             }
           }
@@ -102,9 +105,17 @@
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
           "dependencies": {
+            "Microsoft.IdentityModel.Tokens": {
+              "target": "Package",
+              "version": "[5.5.0, )"
+            },
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[5.5.0, )"
             }
           },
           "imports": [
@@ -218,6 +229,12 @@
               },
               "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\DL\\DL.csproj": {
                 "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\DL\\DL.csproj"
+              },
+              "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\MiddleWare\\MiddleWare.csproj": {
+                "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\MiddleWare\\MiddleWare.csproj"
+              },
+              "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj": {
+                "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj"
               }
             }
           }
@@ -325,6 +342,136 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\MiddleWare\\MiddleWare.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\MiddleWare\\MiddleWare.csproj",
+        "projectName": "MiddleWare",
+        "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\MiddleWare\\MiddleWare.csproj",
+        "packagesPath": "C:\\Users\\silen\\.nuget\\packages\\",
+        "outputPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\MiddleWare\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\silen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {
+              "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj": {
+                "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[5.5.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj",
+        "projectName": "Service",
+        "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\Service.csproj",
+        "packagesPath": "C:\\Users\\silen\\.nuget\\packages\\",
+        "outputPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Service\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\silen\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "netcoreapp3.1"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [
