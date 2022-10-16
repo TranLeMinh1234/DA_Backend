@@ -6,5 +6,6 @@ namespace BL.Interface
 {
     public interface IBLFileAttachment : IBLBase
     {
+        public List<ClassModel.File.FileAttachment> GetAttachFile(Guid taskId);
     }
 }

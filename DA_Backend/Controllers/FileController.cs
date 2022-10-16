@@ -1,9 +1,11 @@
 ﻿using BL.Interface;
 using ClassModel;
 using ClassModel.File;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,17 +21,19 @@ namespace DA_Backend.Controllers
     {
         private IBLFileAttachment _iBLFileAttachment;
         private IConfiguration _configuration;
-        public FileController(IBLFileAttachment bLFileAttachment, IConfiguration configuration) : base(bLFileAttachment, configuration)
+        private ContextRequest _contextRequest;
+        public FileController(IBLFileAttachment bLFileAttachment, IConfiguration configuration, ContextRequest contextRequest) : base(bLFileAttachment, configuration)
         {
             _iBLFileAttachment = bLFileAttachment;
             _configuration = configuration;
+            _contextRequest = contextRequest;
         }
 
-        private string fileExtensionAllow = ".jpg,.xlsx,.png";
+        private string fileExtensionAllow = ".jpg,.xlsx,.png,.jfif";
         private string defautPathFileSave = "\\FileUpload";
 
         [HttpPost("upload")]
-        public ServiceResult UploadFile([FromForm]IFormFileCollection formFiles, [FromForm] EnumAttachment typeAttachment = EnumAttachment.AttachAvatar, [FromForm] Guid? attachmentId = null)
+        public ServiceResult UploadFile([FromForm] IFormFileCollection formFiles, [FromForm] EnumAttachment typeAttachment = EnumAttachment.AttachAvatar, [FromForm] Guid? attachmentId = null)
         {
             ServiceResult serviceResult = new ServiceResult();
             try
@@ -64,7 +68,9 @@ namespace DA_Backend.Controllers
                                 FileName = $"{newID.ToString()}_{formFile.FileName}",
                                 FilePath = saveFileName,
                                 AttachmentId = attachmentId,
-                                TypeAttachment = (int)typeAttachment
+                                TypeAttachment = (int)typeAttachment,
+                                CreatedTime = DateTime.Now,
+                                CreatedByEmail = _contextRequest.GetEmailCurrentUser()
                             };
                             _iBLFileAttachment.Insert(attachment);
 
@@ -73,6 +79,8 @@ namespace DA_Backend.Controllers
                                 formFile.CopyTo(fileStream);
                                 fileStream.Flush();
                             }
+
+                            serviceResult.Data = attachment;
                         }
                         else
                         {
@@ -87,12 +95,13 @@ namespace DA_Backend.Controllers
                     serviceResult.ErrorCode.Add("EmptyDataUpload");
                 }
             }
-            catch (Exception ex){
+            catch (Exception ex) {
                 System.Console.WriteLine(ex);
             }
             return serviceResult;
         }
 
+        [AllowAnonymous]
         [HttpGet("download/{fileName}")]
         public FileContentResult DownloadFile(string fileName)
         {
@@ -100,11 +109,12 @@ namespace DA_Backend.Controllers
                 Path.GetDirectoryName(Directory.GetCurrentDirectory()) +
                 defautPathFileSave +
                 $"\\{Path.GetExtension(fileName)}\\{fileName}";
-            byte[] byteOfFile = System.IO.File.ReadAllBytes(filePath); 
+            byte[] byteOfFile = System.IO.File.ReadAllBytes(filePath);
             return File(byteOfFile, "application/octet-stream");
 
         }
 
+        [AllowAnonymous]
         [HttpGet("img/{fileName}")]
         public FileContentResult DownloadFileImage(string fileName)
         {
@@ -115,6 +125,21 @@ namespace DA_Backend.Controllers
             byte[] byteOfFile = System.IO.File.ReadAllBytes(filePath);
             return File(byteOfFile, "image/jpeg");
 
+        }
+
+        [HttpGet("getattachfile/{taskId}")]
+        public IActionResult GetAttachFile(Guid taskId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLFileAttachment.GetAttachFile(taskId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
         }
     }
 }

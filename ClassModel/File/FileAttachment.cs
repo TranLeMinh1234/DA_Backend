@@ -19,5 +19,9 @@ namespace ClassModel.File
         public Guid? AttachmentId { get; set; }
         [AddDatabase]
         public int TypeAttachment { get; set; }
+        [AddDatabase]
+        public DateTime? CreatedTime { get; set; }
+        [AddDatabase]
+        public string CreatedByEmail { get; set; }
     }
 }
