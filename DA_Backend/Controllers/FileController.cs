@@ -32,6 +32,7 @@ namespace DA_Backend.Controllers
         private string fileExtensionAllow = ".jpg,.xlsx,.png,.jfif";
         private string defautPathFileSave = "\\FileUpload";
 
+        [AllowAnonymous]
         [HttpPost("upload")]
         public ServiceResult UploadFile([FromForm] IFormFileCollection formFiles, [FromForm] EnumAttachment typeAttachment = EnumAttachment.AttachAvatar, [FromForm] Guid? attachmentId = null)
         {
@@ -141,5 +142,21 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPost("deletemulti")]
+        public IActionResult DeleteMulti([FromBody] List<string> listFileId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLFileAttachment.DeleteMulti(listFileId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
     }
 }

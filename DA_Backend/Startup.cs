@@ -55,6 +55,7 @@ namespace DA_Backend
             services.AddScoped<IDLTask, DLTask>();
             services.AddScoped<IDLUser, DLUser>();
             services.AddScoped<IDLCheckTask, DLCheckTask>();
+            services.AddScoped<IDLComment, DLComment>();
 
             //BL
             services.AddScoped<IBLBase, BLBase>();
@@ -64,6 +65,7 @@ namespace DA_Backend
             services.AddScoped<IBLTask, BLTask>();
             services.AddScoped<IBLUser, BLUser>();
             services.AddScoped<IBLCheckTask, BLCheckTask>();
+            services.AddScoped<IBLComment, BLComment>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 

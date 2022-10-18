@@ -22,5 +22,10 @@ namespace BL.FileAttachment
             var result = _iDLFileAttachment.GetAttachFile(taskId);
             return result;
         }
+
+        public int DeleteMulti(List<string> listFileId) {
+            var result = _iDLFileAttachment.DeleteMulti(listFileId);
+            return result;
+        }
     }
 }

@@ -23,6 +23,7 @@ namespace ClassModel.User
         [AddDatabase]
         public DateTime? DateOfBirth { get; set; }
         public FileAttachment FileAvatar { get; set; } = null;
+        public string FileAvatarName { get; set; }
         public string PassWordRepeated { get; set; }
     }
 }
