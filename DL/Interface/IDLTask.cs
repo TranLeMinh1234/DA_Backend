@@ -9,11 +9,13 @@ namespace DL.Interface
 {
     public interface IDLTask : IDLBase
     {
-        public Task GetLastTask(string Email);
+        public Task GetLastTask(string Email, int typeTask, Guid? groupTaskId = null);
         public List<Task> GetChildTask(Guid taskId);
         public int InsertLabelsTask(Guid taskId, List<string> listLabelId);
         public List<Label> GetLabelsTask(Guid taskId);
         public int DeleteLabelsTask(Guid taskId, Guid labelId);
         public void GetCommentsTask(Guid taskId, out List<Comment> comments, out List<FileAttachment> fileAttachments, out List<User> users);
+        public int UpdateDescription(Guid taskId, string description);
+        public Task GetFullInfo(Guid taskId);
     }
 }

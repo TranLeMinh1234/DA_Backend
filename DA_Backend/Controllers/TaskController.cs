@@ -129,5 +129,51 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPut("description")]
+        public IActionResult UpdateDescription([FromBody] Dictionary<string,string> paramUpdate)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.UpdateDescription(paramUpdate);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpPost("insertcustom")]
+        public IActionResult InsertCustom([FromBody] Task newTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.InsertCustom(newTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+
+        [HttpGet("getfullinfo/{taskId}")]
+        public IActionResult GetFullInfo(Guid taskId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.GetFullInfo(taskId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

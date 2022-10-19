@@ -8,18 +8,30 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using static ClassModel.Enumeration;
 
 namespace DL.Business
 {
     public class DLTask : DLBase, IDLTask
     {
-        public Task GetLastTask(string email)
+        public Task GetLastTask(string email, int typeTask, Guid? groupTaskId = null)
         {
-            string sql = $"SELECT * FROM Task WHERE CreatedByEmail = @Email AND TypeTask = 1 ORDER BY SortOrder LIMIT 0,1;";
+            string sql = string.Empty;
             Dictionary<string, object> param = new Dictionary<string, object>();
-            param.Add("Email", email);
+            param.Add("TypeTask", typeTask);
+            if (typeTask == (int)EnumTypeTask.Personal)
+            {
+                sql = $"SELECT * FROM Task WHERE CreatedByEmail = @Email AND TypeTask = @TypeTask ORDER BY SortOrder LIMIT 0,1;";
+                param.Add("Email", email);
+            }
+            else
+            {
+                sql = $"SELECT * FROM Task WHERE GroupTaskId = @GroupTaskId AND TypeTask = @TypeTask ORDER BY SortOrder LIMIT 0,1;";
+                param.Add("GroupTaskId", groupTaskId);
+            }
             var result = _dbConnection.Query<Task>(sql, param, commandType: System.Data.CommandType.Text).FirstOrDefault();
             return result;
         }
@@ -72,6 +84,35 @@ namespace DL.Business
             comments = resultExecutor.Read<Comment>().ToList();
             users = resultExecutor.Read<User>().ToList();
             fileAttachments = resultExecutor.Read<FileAttachment>().ToList();
+        }
+
+        public int UpdateDescription(Guid taskId, string description)
+        {
+            string sql = $"UPDATE Task SET Description = @Description WHERE TaskId = @TaskId";
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("TaskId", taskId);
+            param.Add("Description", description);
+            var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            return result;
+        }
+
+        public Task GetFullInfo(Guid taskId)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("TaskIdParam", taskId);
+            var result = _dbConnection.Query<Task,User,User,User,Task>("Proc_GetFullInfoTask",
+                map: (task,userDoTask,userAssign,userCreate) =>
+                { 
+                    task.AssignedBy = userAssign;
+                    task.AssignedFor = userDoTask;
+                    task.CreatedBy = userCreate;
+
+                    return task;
+                },
+                param,
+                splitOn: "Email,Email,Email",
+                commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
+            return result;
         }
     }
 }

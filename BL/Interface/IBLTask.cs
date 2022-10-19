@@ -18,5 +18,11 @@ namespace BL.Interface
         public int DeleteLabelsTask(Guid taskId, Guid labelId);
 
         public List<Comment> GetCommentsTask(Guid taskId);
+
+        public int UpdateDescription(Dictionary<string, string> paramUpdate);
+
+        public Task InsertCustom(Task newTask);
+
+        public Task GetFullInfo(Guid taskId);
     }
 }

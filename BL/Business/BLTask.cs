@@ -5,6 +5,7 @@ using Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static ClassModel.Enumeration;
 
 namespace BL.Business
 {
@@ -25,7 +26,7 @@ namespace BL.Business
             newTask.CreatedTime = DateTime.Now;
             newTask.AssignForEmail = _contextRequest.GetEmailCurrentUser();
 
-            Task taskLast = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser());
+            Task taskLast = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser(), (int)newTask.TypeTask);
             if (taskLast != null)
                 newTask.SortOrder = taskLast.SortOrder + 1;
             else
@@ -83,6 +84,44 @@ namespace BL.Business
             }
 
             return comments;
+        }
+
+        public int UpdateDescription(Dictionary<string, string> paramUpdate)
+        {
+            string description = String.Empty;
+            string taskIdString = String.Empty;
+            if (paramUpdate.TryGetValue("description", out description) && paramUpdate.TryGetValue("taskId", out taskIdString))
+            {
+                var taskId = Guid.Parse(taskIdString);
+                var result = _iDLTask.UpdateDescription(taskId,description);
+                return result;
+            }
+
+            return 0;
+        }
+
+        public Task InsertCustom(Task newTask)
+        {
+            newTask.CreatedTime = DateTime.Now;
+            newTask.CreatedByEmail = _contextRequest.GetEmailCurrentUser();
+            newTask.AssignForEmail = _contextRequest.GetEmailCurrentUser();
+            newTask.AssignedByEmail = _contextRequest.GetEmailCurrentUser();
+
+            Task lastestTask = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser(), (int)newTask.TypeTask);
+            if(lastestTask != null)
+                newTask.SortOrder = lastestTask.SortOrder + 1;
+            else
+                newTask.SortOrder = 1;
+
+            var newIdTask = _iDLTask.Insert(newTask);
+            newTask.TaskId = newIdTask;
+
+            return newTask;
+        }
+
+        public Task GetFullInfo(Guid taskId) {
+            var result = _iDLTask.GetFullInfo(taskId);
+            return result;
         }
     }
 }

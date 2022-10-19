@@ -22,7 +22,7 @@ namespace ClassModel.TaskRelate
         [AddDatabase]
         public string CreatedByEmail { get; set; }
         [AddDatabase]
-        public DateTime CreatedTime { get; set; }
+        public DateTime? CreatedTime { get; set; }
         [AddDatabase]
         public string PathTreeTask { get; set; }
         [AddDatabase]
@@ -30,11 +30,13 @@ namespace ClassModel.TaskRelate
         [AddDatabase]
         public DateTime? EndTime { get; set; }
         [AddDatabase]
-        public int SortOrder { get; set; }
+        public int? SortOrder { get; set; }
         [AddDatabase]
-        public int? ProcessId { get; set; }
+        public Guid? ProcessId { get; set; }
         [AddDatabase]
         public string AssignForEmail { get; set; }
+        [AddDatabase]
+        public Guid? GroupTaskId { get; set; }
 
         public List<FileAttachment> ListAttachment { get; set; }
         public List<string> ListCommment { get; set; }
