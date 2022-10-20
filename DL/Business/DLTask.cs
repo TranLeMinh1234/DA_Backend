@@ -1,4 +1,5 @@
 ﻿using ClassModel.File;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using ClassModel.User;
 using Dapper;
@@ -112,6 +113,44 @@ namespace DL.Business
                 param,
                 splitOn: "Email,Email,Email",
                 commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
+            return result;
+        }
+
+        public List<Task> GetDailyTask(ParamDailyTask paramDailyTask, string email) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            Dictionary<Guid, Task> taskMap = new Dictionary<Guid, Task>();
+            param.Add("StartTimeQuery", paramDailyTask.StartTime);
+            param.Add("EndTimeQuery", paramDailyTask.EndTime);
+            param.Add("EmailQuery", email);
+
+            var result = (List<Task>)_dbConnection.Query<Task, User, Label, Task>("Proc_GetDailyTask",
+                (task, userDoTask, label) => {
+                    if (taskMap.ContainsKey((Guid)task.TaskId))
+                    {
+                        taskMap.TryGetValue((Guid)task.TaskId, out task);
+                    }
+                    else
+                    {
+                        taskMap.Add((Guid)task.TaskId, task);
+                    }
+
+                    if (task != null)
+                    {
+                        task.ListLabel.Add(label);
+                        task.AssignedFor = userDoTask;
+                    }
+
+                    return task;
+                }, 
+                param,
+                splitOn: "Email,LabelId", commandType: System.Data.CommandType.StoredProcedure);
+            return (List<Task>)taskMap.Values.ToList();
+        }
+
+        public int DeleteCustom(Guid taskId) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("TaskId", taskId);
+            var result = _dbConnection.Execute("Proc_DeleteTask", param, commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
     }

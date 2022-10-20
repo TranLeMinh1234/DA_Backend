@@ -1,4 +1,5 @@
 ﻿using ClassModel.File;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using ClassModel.User;
 using System;
@@ -17,5 +18,9 @@ namespace DL.Interface
         public void GetCommentsTask(Guid taskId, out List<Comment> comments, out List<FileAttachment> fileAttachments, out List<User> users);
         public int UpdateDescription(Guid taskId, string description);
         public Task GetFullInfo(Guid taskId);
+
+        public List<Task> GetDailyTask(ParamDailyTask paramDailyTask,string email);
+
+        public int DeleteCustom(Guid taskId);
     }
 }

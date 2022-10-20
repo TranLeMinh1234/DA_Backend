@@ -1,4 +1,5 @@
 ﻿using BL.Interface;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using DL.Interface;
 using Service;
@@ -121,6 +122,16 @@ namespace BL.Business
 
         public Task GetFullInfo(Guid taskId) {
             var result = _iDLTask.GetFullInfo(taskId);
+            return result;
+        }
+
+        public List<Task> GetDailyTask(ParamDailyTask paramDailyTask) {
+            var result = _iDLTask.GetDailyTask(paramDailyTask, _contextRequest.GetEmailCurrentUser());
+            return result;
+        }
+
+        public int DeleteCustom(Guid taskId) {
+            var result = _iDLTask.DeleteCustom(taskId);
             return result;
         }
     }

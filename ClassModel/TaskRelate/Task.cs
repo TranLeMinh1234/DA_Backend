@@ -41,7 +41,7 @@ namespace ClassModel.TaskRelate
         public List<FileAttachment> ListAttachment { get; set; }
         public List<string> ListCommment { get; set; }
         public List<CheckTask> ListCheckTask { get; set; }
-        public List<Label> ListLabel { get; set; }
+        public List<Label> ListLabel { get; set; } = new List<Label>();
         public ClassModel.User.User CreatedBy { get; set; }
         public ClassModel.User.User AssignedBy { get; set; }
         public ClassModel.User.User AssignedFor { get; set; }

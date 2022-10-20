@@ -8,8 +8,4 @@
     <ProjectReference Include="..\Attribute\Attribute.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="ParamApi\" />
-  </ItemGroup>
-
 </Project>

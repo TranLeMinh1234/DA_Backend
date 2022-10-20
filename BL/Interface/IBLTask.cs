@@ -1,4 +1,5 @@
-﻿using ClassModel.TaskRelate;
+﻿using ClassModel.ParamApi;
+using ClassModel.TaskRelate;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -24,5 +25,9 @@ namespace BL.Interface
         public Task InsertCustom(Task newTask);
 
         public Task GetFullInfo(Guid taskId);
+
+        public List<Task> GetDailyTask(ParamDailyTask paramDailyTask);
+
+        public int DeleteCustom(Guid taskId);
     }
 }

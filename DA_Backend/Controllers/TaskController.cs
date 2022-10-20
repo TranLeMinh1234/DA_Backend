@@ -1,5 +1,6 @@
 ﻿using BL.Interface;
 using ClassModel;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -175,5 +176,38 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPost("dailytask")]
+        public IActionResult GetDailyTask([FromBody] ParamDailyTask ParamDailyTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.GetDailyTask(ParamDailyTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpDelete("deleteCustom/{taskId}")]
+        public IActionResult DeleteCustom(Guid taskId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.DeleteCustom(taskId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+
+
     }
 }
