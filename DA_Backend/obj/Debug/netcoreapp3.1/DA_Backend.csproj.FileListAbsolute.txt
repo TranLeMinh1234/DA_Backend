@@ -56,3 +56,16 @@ E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netc
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Service.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Service.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\MailKit.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Microsoft.Extensions.DependencyInjection.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Options.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\Microsoft.Extensions.Primitives.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\MimeKit.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\NETCore.MailKit.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\System.Formats.Asn1.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\System.Security.Cryptography.Cng.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\System.Text.Encoding.CodePages.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.0\System.Security.Cryptography.Cng.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Security.Cryptography.Pkcs.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\DA_Backend\bin\Debug\netcoreapp3.1\runtimes\win\lib\netcoreapp3.1\System.Text.Encoding.CodePages.dll

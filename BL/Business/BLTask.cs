@@ -134,5 +134,20 @@ namespace BL.Business
             var result = _iDLTask.DeleteCustom(taskId);
             return result;
         }
+
+        public int UpdateDeadline(int typeDeadline, DateTime? newDeadline, Guid taskId) {
+            string deadlineUpdate = string.Empty;
+            if (typeDeadline == (int)EnumTypeDeadline.Start)
+            {
+                deadlineUpdate = "StartTime";
+            }
+            else
+            {
+                deadlineUpdate = "EndTime";
+            }
+            var result = _iDLTask.UpdateDeadline(deadlineUpdate, newDeadline, taskId);
+
+            return result;
+        }
     }
 }

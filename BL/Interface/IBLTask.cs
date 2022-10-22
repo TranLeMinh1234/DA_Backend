@@ -29,5 +29,7 @@ namespace BL.Interface
         public List<Task> GetDailyTask(ParamDailyTask paramDailyTask);
 
         public int DeleteCustom(Guid taskId);
+
+        public int UpdateDeadline(int typeDeadline, DateTime? newDeadline, Guid taskId);
     }
 }

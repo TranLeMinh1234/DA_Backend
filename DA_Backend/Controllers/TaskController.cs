@@ -1,5 +1,6 @@
 ﻿using BL.Interface;
 using ClassModel;
+using ClassModel.Email;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using Microsoft.AspNetCore.Authorization;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Service.Interface;
 using System;
 using System.Collections.Generic;
 
@@ -19,10 +21,12 @@ namespace DA_Backend.Controllers
     {
         private IBLTask _iBLTask;
         private IConfiguration _configuration;
-        public TaskController(IBLTask iBLTask, IConfiguration configuration) : base(iBLTask,configuration)
+        private readonly IMailService _mailService;
+        public TaskController(IBLTask iBLTask, IConfiguration configuration, IMailService mailService) : base(iBLTask, configuration)
         {
             _iBLTask = iBLTask;
             _configuration = configuration;
+            _mailService = mailService;
         }
 
         [HttpPost("insertChildTask")]
@@ -207,7 +211,36 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
+        [HttpPut("deadline")]
+        public IActionResult UpdateDeadline([FromBody] ParamUpdateDeadline paramUpdateDeadline)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.UpdateDeadline(paramUpdateDeadline.typeDeadline, paramUpdateDeadline.newDeadline, paramUpdateDeadline.taskId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
 
+
+        [HttpPost("testemail")]
+        public async System.Threading.Tasks.Task<IActionResult> SendMail([FromBody] MailRequest request)
+        {
+            try
+            {
+                await _mailService.SendEmailAsync(request);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
 
     }
 }

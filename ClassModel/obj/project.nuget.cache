@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "nn6KTgLos1xrdLaIP6T9Ml1TtO+wU0yXwhUq1ZpIMoWscV0pCGlmkGiaZPoiCeanr12PphDphwKJKFr9WGgwHA==",
+  "dgSpecHash": "2U9dXD1x+fT0y5h9cnuEyUDd1T5+r66odQ9xVswGyq/VvMCIgQ52dYZgqiLOSbphKThhuZVYU9J4fnYsgJdIxQ==",
   "success": true,
   "projectFilePath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\silen\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "C:\\Users\\silen\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
+    "C:\\Users\\silen\\.nuget\\packages\\system.memory\\4.5.1\\system.memory.4.5.1.nupkg.sha512",
+    "C:\\Users\\silen\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\4.5.1\\system.runtime.compilerservices.unsafe.4.5.1.nupkg.sha512"
+  ],
   "logs": []
 }

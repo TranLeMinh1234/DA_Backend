@@ -11,3 +11,7 @@ E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netc
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Service.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Service.pdb
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.csproj.CopyComplete
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Attribute.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\ClassModel.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Attribute.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\ClassModel.pdb

@@ -22,5 +22,7 @@ namespace DL.Interface
         public List<Task> GetDailyTask(ParamDailyTask paramDailyTask,string email);
 
         public int DeleteCustom(Guid taskId);
+
+        public int UpdateDeadline(string deadlineUpdate, DateTime? newDeadline, Guid taskId);
     }
 }

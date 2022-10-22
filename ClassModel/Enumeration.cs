@@ -19,5 +19,11 @@ namespace ClassModel
             GroupPersonal = 2,
             Group = 3
         }
+
+        public enum EnumTypeDeadline
+        {
+            Start = 0,
+            End = 1
+        }
     }
 }

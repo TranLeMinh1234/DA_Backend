@@ -8,3 +8,8 @@ E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcore
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.csproj.CoreCompileInputs.cache
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\Attribute.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\ClassModel.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\ClassModel.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\bin\Debug\netcoreapp3.1\Attribute.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\Service\obj\Debug\netcoreapp3.1\Service.csproj.CopyComplete

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "myKl32WAdkByzTKB50TKm7t3XY8dlkILNxJ8qCez+3DmzrKNR2zmehEIUBkfjQJusEOfJUP5DGy9BeTqr8OEkg==",
+  "dgSpecHash": "hK9LD6dSvlxj3uhXWN47CaM6g/1nXOx+kc08WRS4nUZ4t+pgU2Nv9/HiBTvKmeYT89K73hu/CelccM0tLhA4ig==",
   "success": true,
   "projectFilePath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\DL\\DL.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,8 @@
     "C:\\Users\\silen\\.nuget\\packages\\k4os.compression.lz4\\1.2.6\\k4os.compression.lz4.1.2.6.nupkg.sha512",
     "C:\\Users\\silen\\.nuget\\packages\\k4os.compression.lz4.streams\\1.2.6\\k4os.compression.lz4.streams.1.2.6.nupkg.sha512",
     "C:\\Users\\silen\\.nuget\\packages\\k4os.hash.xxhash\\1.0.6\\k4os.hash.xxhash.1.0.6.nupkg.sha512",
+    "C:\\Users\\silen\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
+    "C:\\Users\\silen\\.nuget\\packages\\microsoft.extensions.primitives\\2.2.0\\microsoft.extensions.primitives.2.2.0.nupkg.sha512",
     "C:\\Users\\silen\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\silen\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
     "C:\\Users\\silen\\.nuget\\packages\\mysql.data\\8.0.30\\mysql.data.8.0.30.nupkg.sha512",

@@ -2,6 +2,7 @@ using BL;
 using BL.Business;
 using BL.FileAttachment;
 using BL.Interface;
+using ClassModel.Email;
 using DL;
 using DL.Business;
 using DL.DLFile;
@@ -18,6 +19,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MiddleWare;
 using Service;
+using Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,6 +70,9 @@ namespace DA_Backend
             services.AddScoped<IBLComment, BLComment>();
 
             services.AddSingleton<IConfiguration>(Configuration);
+
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
+            services.AddTransient<IMailService, MailService>();
 
             services.AddCors(options => {
                 options.AddPolicy(name: CORSConfig,

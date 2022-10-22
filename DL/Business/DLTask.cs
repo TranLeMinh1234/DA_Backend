@@ -136,7 +136,9 @@ namespace DL.Business
 
                     if (task != null)
                     {
-                        task.ListLabel.Add(label);
+                        if(label != null)
+                            task.ListLabel.Add(label);
+                        
                         task.AssignedFor = userDoTask;
                     }
 
@@ -149,8 +151,18 @@ namespace DL.Business
 
         public int DeleteCustom(Guid taskId) {
             Dictionary<string, object> param = new Dictionary<string, object>();
-            param.Add("TaskId", taskId);
+            param.Add("TaskIdQuery", taskId);
             var result = _dbConnection.Execute("Proc_DeleteTask", param, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        public int UpdateDeadline(string deadlineUpdate, DateTime? newDeadline, Guid taskId)
+        {
+            string sql = $"UPDATE Task SET {deadlineUpdate} = @NewDeadline Where TaskId = @TaskIdQuery";
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("TaskIdQuery", taskId);
+            param.Add("NewDeadline", newDeadline);
+            var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
             return result;
         }
     }

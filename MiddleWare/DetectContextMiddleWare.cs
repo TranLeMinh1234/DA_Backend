@@ -26,6 +26,7 @@ namespace MiddleWare
             if (context.Request.Headers.TryGetValue("Authorization", out tokenObject))
             {
                 String accessToken = tokenObject.ToString().Replace("bearer ", "");
+                accessToken = accessToken.ToString().Replace("Bearer ", "");
                 var handler = new JwtSecurityTokenHandler();
                 var accessTokenHandled = handler.ReadJwtToken(accessToken);
 
