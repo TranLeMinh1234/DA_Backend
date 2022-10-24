@@ -1,8 +1,10 @@
 ﻿using BL.Interface;
+using ClassModel;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using DL.Interface;
 using Service;
+using Service.Interface;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,11 +16,13 @@ namespace BL.Business
     {
         private IDLTask _iDLTask;
         private ContextRequest _contextRequest;
+        private RemindTaskService _iRemindTaskService;
 
-        public BLTask(IDLTask iDLTask, ContextRequest contextRequest) : base(iDLTask, contextRequest)
+        public BLTask(IDLTask iDLTask, ContextRequest contextRequest, RemindTaskService remindTaskService) : base(iDLTask, contextRequest)
         {
             _iDLTask = iDLTask;
             _contextRequest = contextRequest;
+            _iRemindTaskService = remindTaskService;
         }
 
         public Task InsertChildTask(Task newTask)
@@ -148,6 +152,72 @@ namespace BL.Business
             var result = _iDLTask.UpdateDeadline(deadlineUpdate, newDeadline, taskId);
 
             return result;
+        }
+
+        public async System.Threading.Tasks.Task<ServiceResult> RemindTask(ParamRemindTask paramRemindTask) {
+            ServiceResult serviceResult = new ServiceResult();
+
+            if (paramRemindTask.IsRemindEndTime)
+            {
+                DateTime endTime = (DateTime)paramRemindTask.EndTime;
+                endTime = endTime.AddSeconds(paramRemindTask.TimeBeforeEndTime*-1);
+                if (endTime.Ticks < DateTime.Now.Ticks)
+                {
+                    serviceResult.Success = false;
+                    serviceResult.ErrorCode.Add("InvalidTimeBeforeEndTime");
+                }
+                else
+                {
+                    foreach (var email in paramRemindTask.EmailWillSend)
+                    {
+                        RemindDataStore remindDataStore = new RemindDataStore() {
+                            RemindDataId = Guid.NewGuid(),
+                            TaskId = paramRemindTask.TaskId,
+                            IsUsed = false,
+                            EmailRemindedUser = "tlminh10300@gmail.com",
+                            TypeRemind = (int)EnumTypeRemind.EndTime
+                        };
+                        int numberOfInsertedRecord = _iDLTask.InsertRemindDataStore(remindDataStore);
+                        if (numberOfInsertedRecord > 0)
+                        {
+                            await _iRemindTaskService.AddRemindTaskJob((Guid)remindDataStore.RemindDataId, endTime);
+                        }
+                    }
+                }
+            }
+
+            if (paramRemindTask.IsRemindStartTime)
+            {
+                DateTime startTime = (DateTime)paramRemindTask.StartTime;
+                startTime = startTime.AddSeconds(paramRemindTask.TimeBeforeStartTime * -1);
+                if (startTime.Ticks < DateTime.Now.Ticks)
+                {
+                    serviceResult.Success = false;
+                    serviceResult.ErrorCode.Add("InvalidTimeBeforeStartTime");
+                }
+                else
+                {
+                    foreach (var email in paramRemindTask.EmailWillSend)
+                    {
+                        RemindDataStore remindDataStore = new RemindDataStore()
+                        {
+                            RemindDataId = Guid.NewGuid(),
+                            TaskId = paramRemindTask.TaskId,
+                            IsUsed = false,
+                            EmailRemindedUser = "tlminh10300@gmail.com",
+                            TypeRemind = (int)EnumTypeRemind.StartTime
+                        };
+                        int numberOfInsertedRecord = _iDLTask.InsertRemindDataStore(remindDataStore);
+                        if (numberOfInsertedRecord > 0)
+                        {
+                            await _iRemindTaskService.AddRemindTaskJob((Guid)remindDataStore.RemindDataId, startTime);
+                        }
+                    }
+                }
+            }
+
+
+            return serviceResult;
         }
     }
 }

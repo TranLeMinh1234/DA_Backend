@@ -41,25 +41,27 @@ namespace DL.Business
         {
             string sql = $"SELECT * FROM Task WHERE PathTreeTask like @TaskId;";
             Dictionary<string, object> param = new Dictionary<string, object>();
-            param.Add("TaskId", "%"+taskId.ToString());
+            param.Add("TaskId", "%" + taskId.ToString());
             var result = (List<Task>)_dbConnection.Query<Task>(sql, param, commandType: System.Data.CommandType.Text);
             return result;
         }
 
-        public int InsertLabelsTask(Guid taskId, List<string> listLabelId) {
+        public int InsertLabelsTask(Guid taskId, List<string> listLabelId)
+        {
             StringBuilder sql = new StringBuilder();
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", taskId);
-            for(int i = 0;i < listLabelId.Count;i++)
+            for (int i = 0; i < listLabelId.Count; i++)
             {
                 sql.Append($"INSERT INTO TaskLabel (TaskId, LabelId) values (@TaskId,@LabelId{i});");
-                param.Add($"LabelId{i}",listLabelId.ElementAt(i));
+                param.Add($"LabelId{i}", listLabelId.ElementAt(i));
             }
             var result = _dbConnection.Execute(sql.ToString(), param, commandType: System.Data.CommandType.Text);
             return result;
         }
 
-        public List<Label> GetLabelsTask(Guid taskId) {
+        public List<Label> GetLabelsTask(Guid taskId)
+        {
             string sql = $"SELECT * FROM Label ll INNER JOIN TaskLabel tl ON tl.LabelId = ll.LabelId AND tl.TaskId = @TaskId";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", taskId);
@@ -67,7 +69,8 @@ namespace DL.Business
             return result;
         }
 
-        public int DeleteLabelsTask(Guid taskId, Guid labelId) {
+        public int DeleteLabelsTask(Guid taskId, Guid labelId)
+        {
             string sql = $"DELETE FROM TaskLabel Where TaskId = @TaskId AND LabelId = @LabelId";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", taskId);
@@ -81,7 +84,7 @@ namespace DL.Business
             //var query = "Drop Table if exists CommentTask;\r\n\r\n\tCREATE TEMPORARY TABLE CommentTask SELECT * FROM Comment Where AttachmentId = @TaskId;\r\n\r\n\tSelect * From CommentTask;\r\n\tSelect fa.* From fileattachment fa INNER JOIN CommentTask ct ON fa.AttachmentId = ct.CommentId;";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", taskId);
-            var resultExecutor = _dbConnection.QueryMultiple("Proc_GetCommentsTask",new { TaskId = taskId }, null,null,CommandType.StoredProcedure);
+            var resultExecutor = _dbConnection.QueryMultiple("Proc_GetCommentsTask", new { TaskId = taskId }, null, null, CommandType.StoredProcedure);
             comments = resultExecutor.Read<Comment>().ToList();
             users = resultExecutor.Read<User>().ToList();
             fileAttachments = resultExecutor.Read<FileAttachment>().ToList();
@@ -101,9 +104,9 @@ namespace DL.Business
         {
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskIdParam", taskId);
-            var result = _dbConnection.Query<Task,User,User,User,Task>("Proc_GetFullInfoTask",
-                map: (task,userDoTask,userAssign,userCreate) =>
-                { 
+            var result = _dbConnection.Query<Task, User, User, User, Task>("Proc_GetFullInfoTask",
+                map: (task, userDoTask, userAssign, userCreate) =>
+                {
                     task.AssignedBy = userAssign;
                     task.AssignedFor = userDoTask;
                     task.CreatedBy = userCreate;
@@ -116,7 +119,8 @@ namespace DL.Business
             return result;
         }
 
-        public List<Task> GetDailyTask(ParamDailyTask paramDailyTask, string email) {
+        public List<Task> GetDailyTask(ParamDailyTask paramDailyTask, string email)
+        {
             Dictionary<string, object> param = new Dictionary<string, object>();
             Dictionary<Guid, Task> taskMap = new Dictionary<Guid, Task>();
             param.Add("StartTimeQuery", paramDailyTask.StartTime);
@@ -124,7 +128,8 @@ namespace DL.Business
             param.Add("EmailQuery", email);
 
             var result = (List<Task>)_dbConnection.Query<Task, User, Label, Task>("Proc_GetDailyTask",
-                (task, userDoTask, label) => {
+                (task, userDoTask, label) =>
+                {
                     if (taskMap.ContainsKey((Guid)task.TaskId))
                     {
                         taskMap.TryGetValue((Guid)task.TaskId, out task);
@@ -136,20 +141,21 @@ namespace DL.Business
 
                     if (task != null)
                     {
-                        if(label != null)
+                        if (label != null)
                             task.ListLabel.Add(label);
-                        
+
                         task.AssignedFor = userDoTask;
                     }
 
                     return task;
-                }, 
+                },
                 param,
                 splitOn: "Email,LabelId", commandType: System.Data.CommandType.StoredProcedure);
             return (List<Task>)taskMap.Values.ToList();
         }
 
-        public int DeleteCustom(Guid taskId) {
+        public int DeleteCustom(Guid taskId)
+        {
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskIdQuery", taskId);
             var result = _dbConnection.Execute("Proc_DeleteTask", param, commandType: System.Data.CommandType.StoredProcedure);
@@ -158,11 +164,24 @@ namespace DL.Business
 
         public int UpdateDeadline(string deadlineUpdate, DateTime? newDeadline, Guid taskId)
         {
-            string sql = $"UPDATE Task SET {deadlineUpdate} = @NewDeadline Where TaskId = @TaskIdQuery";
+            string sql = $"UPDATE Task SET {deadlineUpdate} = @NewDeadline Where TaskId = @TaskIdQuery; DELETE FROM reminddatastore WHERE TaskId = @TaskIdQuery";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskIdQuery", taskId);
             param.Add("NewDeadline", newDeadline);
             var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            return result;
+        }
+
+        public int InsertRemindDataStore(RemindDataStore remindDataStore)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("RemindDataStoreIdSql", remindDataStore.RemindDataId);
+            param.Add("TypeRemindSql", remindDataStore.TypeRemind);
+            param.Add("EmailRemindedUserSql", remindDataStore.EmailRemindedUser);
+            param.Add("TaskIdSql", remindDataStore.TaskId);
+            param.Add("IsUsedSql", remindDataStore.IsUsed);
+
+            var result = _dbConnection.Execute("Proc_InsertRemindDataStore", param, commandType: CommandType.StoredProcedure);
             return result;
         }
     }

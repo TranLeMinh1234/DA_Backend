@@ -1,4 +1,5 @@
-﻿using ClassModel.ParamApi;
+﻿using ClassModel;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace BL.Interface
         public int InsertLabelsTask(Guid taskId, List<string> listLabelId);
 
         public List<Label> GetLabelsTask(Guid taskId);
-        
+
         public int DeleteLabelsTask(Guid taskId, Guid labelId);
 
         public List<Comment> GetCommentsTask(Guid taskId);
@@ -31,5 +32,7 @@ namespace BL.Interface
         public int DeleteCustom(Guid taskId);
 
         public int UpdateDeadline(int typeDeadline, DateTime? newDeadline, Guid taskId);
+
+        public System.Threading.Tasks.Task<ServiceResult> RemindTask(ParamRemindTask paramRemindTask);
     }
 }

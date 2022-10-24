@@ -72,7 +72,7 @@ namespace DA_Backend
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
-            services.AddTransient<IMailService, MailService>();
+            services.AddSingleton<MailService>();
 
             services.AddCors(options => {
                 options.AddPolicy(name: CORSConfig,
@@ -97,7 +97,9 @@ namespace DA_Backend
                 }
             );
 
+            //service
             services.UseContextRequestService();
+            services.UseRemindTaskService();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

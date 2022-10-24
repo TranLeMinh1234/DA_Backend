@@ -25,5 +25,11 @@ namespace ClassModel
             Start = 0,
             End = 1
         }
+
+        public enum EnumTypeRemind
+        { 
+            StartTime = 0,
+            EndTime = 1
+        }
     }
 }

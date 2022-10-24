@@ -9,8 +9,8 @@ namespace Service
         private string Email;
 
         public ContextRequest()
-        { 
-            
+        {
+            Console.WriteLine("asdasd");
         }
 
         public void SetEmailCurrentUser(string email)
