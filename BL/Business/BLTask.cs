@@ -75,7 +75,7 @@ namespace BL.Business
                 {
                     if (comment.CommentId == file.AttachmentId)
                     {
-                        comment.lstFileAttachment.Add(file);
+                        comment.LstFileAttachment.Add(file);
                     }
                 }
 
@@ -83,7 +83,7 @@ namespace BL.Business
                 {
                     if (user.Email == comment.CreatedByEmail)
                     {
-                        comment.user = user;
+                        comment.User = user;
                     }
                 }
             }

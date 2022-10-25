@@ -53,7 +53,6 @@ namespace Service
                     };
                     MailServiceNotInject mailServiceNotInject = new MailServiceNotInject();
                     await mailServiceNotInject.SendEmailAsync(mailRequest);
-                    await Console.Out.WriteLineAsync("asdasdasdasdasdasdasdasdasd");
                 }
             }
             catch (Exception ex)

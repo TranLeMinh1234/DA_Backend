@@ -18,7 +18,7 @@ namespace ClassModel.TaskRelate
         public DateTime? CreatedTime { get; set; }
         [AddDatabase]
         public Guid? AttachmentId { get; set; }
-        public List<FileAttachment> lstFileAttachment { get; set; } = new List<FileAttachment>();
-        public ClassModel.User.User user { get; set; }
+        public List<FileAttachment> LstFileAttachment { get; set; } = new List<FileAttachment>();
+        public ClassModel.User.User User { get; set; }
     }
 }
