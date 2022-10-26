@@ -1,5 +1,6 @@
 ﻿using Attribute;
 using ClassModel.Query.SQLBuilder;
+using ClassModel.User;
 using Dapper;
 using MySqlX.XDevAPI.Common;
 using System;
@@ -124,6 +125,14 @@ namespace DL
             string sqlQuery = $"SELECT * FROM {tableName} WHERE CreatedByEmail = @CreatedByEmail";
 
             return (List<T>)_dbConnection.Query<T>(sqlQuery, param, commandType: CommandType.Text);
+        }
+
+        public User GetUserInfo(string emailQuery)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("EmailQuery", emailQuery);
+            var result = _dbConnection.Query<User>("Proc_GetUserInfo", param, commandType: CommandType.StoredProcedure).FirstOrDefault(); ;
+            return result;
         }
 
         ~DLBase()

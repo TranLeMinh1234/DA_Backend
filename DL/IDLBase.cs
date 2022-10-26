@@ -1,4 +1,5 @@
 ﻿using ClassModel.Query.SQLBuilder;
+using ClassModel.User;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,8 @@ namespace DL
         public T GetById<T>(Guid recordId);
 
         public List<T> GetAll<T>(string email);
+
+        public User GetUserInfo(string emailQuery);
 
     }
 }
