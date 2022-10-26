@@ -66,5 +66,50 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPut("process")]
+        public IActionResult UpdateProcess([FromBody] Process process)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTemplateGroupTask.UpdateProcess(process);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpPost("insertprocess")]
+        public IActionResult InsertProcess([FromBody] Process process)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTemplateGroupTask.InsertProcess(process);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpDelete("process/{processId}/{columnSettingId}")]
+        public IActionResult DeleteProcess(Guid processId, Guid columnSettingId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTemplateGroupTask.DeleteProcess(processId, columnSettingId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

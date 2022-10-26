@@ -1,4 +1,5 @@
 ﻿using BL.Interface;
+using ClassModel;
 using ClassModel.TaskRelate;
 using DL.Interface;
 using Service;
@@ -50,8 +51,48 @@ namespace BL.Business
 
         public int DeleteCustom(Guid templateId) {
             var result = _iDLTemplateGroupTask.DeleteCustom(templateId);
+
             return result;
         }
 
+        public Guid? UpdateProcess(Process process) {
+            var resultUpdateProcess = _iDLTemplateGroupTask.Update(process);
+            var resultUpdateColumnSetting = _iDLTemplateGroupTask.Update(process.ColumnSetting);
+            return resultUpdateProcess;
+        }
+
+        public ClassModel.TaskRelate.Process InsertProcess(ClassModel.TaskRelate.Process process) {
+            process.ColumnSettingReferenceId = process.ColumnSetting.ColumnSettingId;
+            process.CreatedByEmail = _contextRequest.GetEmailCurrentUser();
+            process.CreatedTime = DateTime.Now;
+
+            Process lastestProcess = _iDLTemplateGroupTask.GetLastestProcess((Guid)process.TemplateGroupTaskReferenceId);
+
+            if (lastestProcess != null)
+            {
+                process.SortOrder = lastestProcess.SortOrder + 1;
+            }
+
+            _iDLTemplateGroupTask.Insert(process);
+            _iDLTemplateGroupTask.Insert(process.ColumnSetting);
+            return process;
+        }
+
+        public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId) {
+            ServiceResult serviceResult = new ServiceResult();
+            bool isExistTaskInProcess = _iDLTemplateGroupTask.CheckExistsTaskInProcess(processId);
+
+            if (isExistTaskInProcess)
+            {
+                serviceResult.Success = false;
+                serviceResult.ErrorCode.Add("ExistsTaskInProcess");
+            }
+            else
+            {
+                _iDLTemplateGroupTask.Delete<Process>(processId);
+                _iDLTemplateGroupTask.Delete<Process>(columnSettingId);
+            }
+            return serviceResult;
+        }
     }
 }

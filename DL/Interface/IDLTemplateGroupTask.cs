@@ -9,5 +9,9 @@ namespace DL.Interface
     {
         public List<TemplateGroupTask> GetAllTemplate(string emailQuery);
         public int DeleteCustom(Guid templateId);
+
+        public Process GetLastestProcess(Guid templateGroupTaskId);
+
+        public bool CheckExistsTaskInProcess(Guid processId);
     }
 }

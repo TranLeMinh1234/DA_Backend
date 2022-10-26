@@ -1,6 +1,8 @@
-﻿using ClassModel.TaskRelate;
+﻿using ClassModel;
+using ClassModel.TaskRelate;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 
 namespace BL.Interface
@@ -12,5 +14,11 @@ namespace BL.Interface
         public List<TemplateGroupTask> GetAllTemplate();
 
         public int DeleteCustom(Guid templateId);
+
+        public Guid? UpdateProcess(ClassModel.TaskRelate.Process process);
+
+        public ClassModel.TaskRelate.Process InsertProcess(ClassModel.TaskRelate.Process process);
+
+        public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId);
     }
 }
