@@ -33,5 +33,20 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpGet("getpagingcustom")]
+        public IActionResult GetPagingCustom(int from, int take, string searchValue)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLUser.GetPagingCustom(from, take, searchValue);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }
