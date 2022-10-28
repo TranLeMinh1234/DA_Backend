@@ -29,6 +29,7 @@ namespace BL.Business
         }
 
         public Dictionary<string, object> GetPagingCustom(int from, int take, string searchValue) {
+            
             var result = _iDLUser.GetPagingCustom(from, take, searchValue);
             return result;
         }

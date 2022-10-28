@@ -25,5 +25,6 @@ namespace ClassModel.User
         public FileAttachment FileAvatar { get; set; } = null;
         public string FileAvatarName { get; set; }
         public string PassWordRepeated { get; set; }
+        public Role Role { get; set; }
     }
 }

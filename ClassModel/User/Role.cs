@@ -19,6 +19,8 @@ namespace ClassModel.User
         public DateTime? CreatedTime { get; set; }
         [AddDatabase]
         public string CreatedByEmail { get; set; }
+        [AddDatabase]
+        public string Description { get; set; }
 
         public List<Permission> ListPermission { get; set; } = new List<Permission>();
 
