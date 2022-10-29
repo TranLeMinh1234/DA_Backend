@@ -18,7 +18,7 @@ namespace DL.Business
 {
     public class DLTask : DLBase, IDLTask
     {
-        public Task GetLastTask(string email, int typeTask, Guid? groupTaskId = null)
+        public Task GetLastTask(string email, int typeTask, Guid? groupTaskId = null, Guid? processId = null)
         {
             string sql = string.Empty;
             Dictionary<string, object> param = new Dictionary<string, object>();
@@ -30,8 +30,9 @@ namespace DL.Business
             }
             else
             {
-                sql = $"SELECT * FROM Task WHERE GroupTaskId = @GroupTaskId AND TypeTask = @TypeTask ORDER BY SortOrder LIMIT 0,1;";
+                sql = $"SELECT * FROM Task WHERE GroupTaskId = @GroupTaskId AND ProcessId = @ProcessId AND TypeTask = @TypeTask ORDER BY SortOrder LIMIT 0,1;";
                 param.Add("GroupTaskId", groupTaskId);
+                param.Add("ProcessId", processId);
             }
             var result = _dbConnection.Query<Task>(sql, param, commandType: System.Data.CommandType.Text).FirstOrDefault();
             return result;

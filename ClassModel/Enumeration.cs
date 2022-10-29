@@ -7,7 +7,7 @@ namespace ClassModel
     public class Enumeration
     {
         public enum EnumAttachment
-        { 
+        {
             AttachAvatar = 1,
             AttachTask = 2,
             AttachComment = 3,
@@ -27,9 +27,15 @@ namespace ClassModel
         }
 
         public enum EnumTypeRemind
-        { 
+        {
             StartTime = 0,
             EndTime = 1
+        }
+
+        public enum EnumTypeGroupTask
+        {
+            Personal = 1,
+            Group = 2
         }
     }
 }

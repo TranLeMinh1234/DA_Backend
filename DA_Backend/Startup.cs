@@ -60,6 +60,7 @@ namespace DA_Backend
             services.AddScoped<IDLComment, DLComment>();
             services.AddScoped<IDLTemplateGroupTask, DLTemplateGroupTask>();
             services.AddScoped<IDLRole, DLRole>();
+            services.AddScoped<IDLGroupTask, DLGroupTask>();
 
             //BL
             services.AddScoped<IBLBase, BLBase>();
@@ -72,6 +73,7 @@ namespace DA_Backend
             services.AddScoped<IBLComment, BLComment>();
             services.AddScoped<IBLTemplateGroupTask, BLTemplateGroupTask>();
             services.AddScoped<IBLRole, BLRole>();
+            services.AddScoped<IBLGroupTask, BLGroupTask>();
 
             services.AddSingleton<IConfiguration>(Configuration);
 

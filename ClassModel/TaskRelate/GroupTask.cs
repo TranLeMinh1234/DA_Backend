@@ -17,9 +17,11 @@ namespace ClassModel.TaskRelate
         [AddDatabase]
         public DateTime? CreatedTime { get; set; }
         [AddDatabase]
-        public string Decription { get; set; }
+        public string Description { get; set; }
         [AddDatabase]
         public int TypeGroupTask { get; set; }
+        [AddDatabase]
+        public Guid? TemplateReferenceId { get; set; }
 
         public List<Role> ListRole { get; set; } = new List<Role>();
         public TemplateGroupTask TemplateGroupTask { get; set; }

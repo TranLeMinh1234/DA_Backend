@@ -10,7 +10,7 @@ namespace DL.Interface
 {
     public interface IDLTask : IDLBase
     {
-        public Task GetLastTask(string Email, int typeTask, Guid? groupTaskId = null);
+        public Task GetLastTask(string Email, int typeTask, Guid? groupTaskId = null, Guid? processId = null);
         public List<Task> GetChildTask(Guid taskId);
         public int InsertLabelsTask(Guid taskId, List<string> listLabelId);
         public List<Label> GetLabelsTask(Guid taskId);

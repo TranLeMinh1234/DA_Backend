@@ -31,7 +31,7 @@ namespace BL.Business
             newTask.CreatedTime = DateTime.Now;
             newTask.AssignForEmail = _contextRequest.GetEmailCurrentUser();
 
-            Task taskLast = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser(), (int)newTask.TypeTask);
+            Task taskLast = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser(), (int)newTask.TypeTask, newTask.GroupTaskId, newTask.ProcessId);
             if (taskLast != null)
                 newTask.SortOrder = taskLast.SortOrder + 1;
             else
@@ -112,7 +112,8 @@ namespace BL.Business
             newTask.AssignForEmail = _contextRequest.GetEmailCurrentUser();
             newTask.AssignedByEmail = _contextRequest.GetEmailCurrentUser();
 
-            Task lastestTask = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser(), (int)newTask.TypeTask);
+            Task lastestTask = _iDLTask.GetLastTask(_contextRequest.GetEmailCurrentUser(), (int)newTask.TypeTask, newTask.GroupTaskId, newTask.ProcessId);
+
             if(lastestTask != null)
                 newTask.SortOrder = lastestTask.SortOrder + 1;
             else
