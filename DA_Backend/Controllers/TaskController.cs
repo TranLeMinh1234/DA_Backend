@@ -254,5 +254,20 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
+        [HttpPut("processbatch")]
+        public IActionResult UpdateTaskProcessBatch([FromBody] List<ParamUpdateTaskProcessBatch> listParam)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.UpdateTaskProcessBatch(listParam);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Ok(serviceResult);
+        }
+
     }
 }

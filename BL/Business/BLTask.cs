@@ -220,5 +220,10 @@ namespace BL.Business
 
             return serviceResult;
         }
+
+        public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam) {
+            var result = _iDLTask.UpdateTaskProcessBatch(listParam);
+            return result;
+        }
     }
 }

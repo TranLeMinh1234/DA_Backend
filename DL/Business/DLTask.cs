@@ -185,5 +185,21 @@ namespace DL.Business
             var result = _dbConnection.Execute("Proc_InsertRemindDataStore", param, commandType: CommandType.StoredProcedure);
             return result;
         }
+
+        public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            StringBuilder sqlBuilder = new StringBuilder();
+
+            for (int i = 1; i <= listParam.Count;i++)
+            {
+                param.Add($"TaskQueryId{i}", listParam.ElementAt(i-1).TaskId);
+                param.Add($"ProcessQueryId{i}", listParam.ElementAt(i-1).ProcessId);
+                param.Add($"SortOrderQueryId{i}", listParam.ElementAt(i-1).SortOrder);
+                sqlBuilder.Append($"UPDATE Task SET ProcessId = @ProcessQueryId{i}, SortOrder = @SortOrderQueryId{i} WHERE TaskId = @TaskQueryId{i};");
+            }
+
+            var result = _dbConnection.Execute(sqlBuilder.ToString(), param, commandType: CommandType.Text);
+            return result;
+        }
     }
 }

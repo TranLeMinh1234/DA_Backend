@@ -34,5 +34,7 @@ namespace BL.Interface
         public int UpdateDeadline(int typeDeadline, DateTime? newDeadline, Guid taskId);
 
         public System.Threading.Tasks.Task<ServiceResult> RemindTask(ParamRemindTask paramRemindTask);
+
+        public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam);
     }
 }

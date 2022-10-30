@@ -2,6 +2,7 @@
 using ClassModel.User;
 using Dapper;
 using DL.Interface;
+using Org.BouncyCastle.Crypto.Tls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +55,13 @@ namespace DL.Business
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("GroupTaskQueryId", groupTaskId);
 
-            var result = _dbConnection.Query<User>("Proc_GetUserJoined", param, commandType: System.Data.CommandType.StoredProcedure);
+            var result = _dbConnection.Query<User, Role, User>("Proc_GetUserJoined",
+                (user, role) => {
+                    user.Role = role;
+                    return user;
+                }
+                ,param,
+                splitOn: "RoleId",commandType: System.Data.CommandType.StoredProcedure);
             return (List<User>)result;
         }
 
