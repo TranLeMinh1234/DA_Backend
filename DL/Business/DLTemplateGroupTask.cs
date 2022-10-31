@@ -1,4 +1,5 @@
 ﻿using ClassModel.File;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using ClassModel.User;
 using Dapper;
@@ -6,9 +7,9 @@ using DL.Interface;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
 namespace DL.Business
@@ -19,7 +20,7 @@ namespace DL.Business
             Dictionary<string, TemplateGroupTask> mapResult = new Dictionary<string, TemplateGroupTask>();
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("EmailQuery", emailQuery);
-            var result = _dbConnection.Query<TemplateGroupTask, Process, ColumnSetting,User, TemplateGroupTask>("Proc_GetAllTemplateGroupTask",
+            var result = _dbConnection.Query<TemplateGroupTask, ClassModel.TaskRelate.Process, ColumnSetting,User, TemplateGroupTask>("Proc_GetAllTemplateGroupTask",
                 (templateGroupTask, process, columnSetting, user) => {
                     if (mapResult.ContainsKey(templateGroupTask.TemplateGroupTaskId.ToString()))
                     {
@@ -59,11 +60,11 @@ namespace DL.Business
             return result;
         }
 
-        public Process GetLastestProcess(Guid templateGroupTaskId) {
+        public ClassModel.TaskRelate.Process GetLastestProcess(Guid templateGroupTaskId) {
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TemplateGroupTaskId", templateGroupTaskId);
             string sql = $"SELECT * FROM Process WHERE TemplateGroupTaskReferenceId = @TemplateGroupTaskId ORDER BY SortOrder desc LIMIT 0,1;";
-            var result = _dbConnection.Query<Process>(sql, param, commandType: CommandType.Text).FirstOrDefault();
+            var result = _dbConnection.Query<ClassModel.TaskRelate.Process>(sql, param, commandType: CommandType.Text).FirstOrDefault();
             return result;
         }
 
@@ -72,6 +73,20 @@ namespace DL.Business
             param.Add("ProcessId", processId);
             string sql = "SELECT EXISTS(SELECT * FROM Task WHERE ProcessId = @ProcessId LIMIT 0,1);";
             var result = _dbConnection.ExecuteScalar<bool>(sql, param, commandType: CommandType.Text);
+            return result;
+        }
+        public int UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            StringBuilder sqlBuilder = new StringBuilder();
+
+            for (int i = 1; i <= listParam.Count; i++)
+            {
+                param.Add($"ProcessQueryId{i}", listParam.ElementAt(i - 1).ProcessId);
+                param.Add($"SortOrderQueryId{i}", listParam.ElementAt(i - 1).SortOrder);
+                sqlBuilder.Append($"UPDATE Process SET SortOrder = @SortOrderQueryId{i} WHERE ProcessId = @ProcessQueryId{i};");
+            }
+
+            var result = _dbConnection.Execute(sqlBuilder.ToString(), param, commandType: CommandType.Text);
             return result;
         }
     }

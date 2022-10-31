@@ -1,11 +1,13 @@
 ﻿using BL.Interface;
 using ClassModel;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace DA_Backend.Controllers
 {
@@ -104,6 +106,21 @@ namespace DA_Backend.Controllers
             try
             {
                 serviceResult.Data = _iBLTemplateGroupTask.DeleteProcess(processId, columnSettingId);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpPut("process/sortorder")]
+        public IActionResult UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTemplateGroupTask.UpdateSortOrderProcesses(listParam);
             }
             catch (Exception ex)
             {

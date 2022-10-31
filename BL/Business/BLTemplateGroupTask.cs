@@ -1,5 +1,6 @@
 ﻿using BL.Interface;
 using ClassModel;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using DL.Interface;
 using Service;
@@ -93,6 +94,11 @@ namespace BL.Business
                 _iDLTemplateGroupTask.Delete<Process>(columnSettingId);
             }
             return serviceResult;
+        }
+
+        public int UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam) {
+            var result = _iDLTemplateGroupTask.UpdateSortOrderProcesses(listParam);
+            return result;
         }
     }
 }

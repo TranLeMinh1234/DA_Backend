@@ -1,4 +1,5 @@
 ﻿using ClassModel;
+using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,7 @@ namespace BL.Interface
         public ClassModel.TaskRelate.Process InsertProcess(ClassModel.TaskRelate.Process process);
 
         public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId);
+
+        public int UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam);
     }
 }

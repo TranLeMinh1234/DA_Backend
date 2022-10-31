@@ -30,7 +30,7 @@ namespace DL.Business
             }
             else
             {
-                sql = $"SELECT * FROM Task WHERE GroupTaskId = @GroupTaskId AND ProcessId = @ProcessId AND TypeTask = @TypeTask ORDER BY SortOrder LIMIT 0,1;";
+                sql = $"SELECT * FROM Task WHERE GroupTaskId = @GroupTaskId AND ProcessId = @ProcessId AND TypeTask = @TypeTask ORDER BY SortOrder desc LIMIT 0,1;";
                 param.Add("GroupTaskId", groupTaskId);
                 param.Add("ProcessId", processId);
             }
