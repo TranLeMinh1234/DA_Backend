@@ -64,8 +64,8 @@ namespace BL.Business
             return result;
         }
 
-        public List<Task> GetAllTask(Guid groupTaskId) {
-            var result = _iDLGroupTask.GetAllTask(groupTaskId);
+        public List<Task> GetAllTask(ParamGetAllTask paramGetAllTask) {
+            var result = _iDLGroupTask.GetAllTask(paramGetAllTask);
             return result;
         }
     }

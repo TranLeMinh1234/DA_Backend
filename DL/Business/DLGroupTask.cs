@@ -1,4 +1,5 @@
-﻿using ClassModel.TaskRelate;
+﻿using ClassModel.ParamApi;
+using ClassModel.TaskRelate;
 using ClassModel.User;
 using Dapper;
 using DL.Interface;
@@ -98,12 +99,44 @@ namespace DL.Business
             return resultMapping.Values.AsList().ElementAt(0);
         }
 
-        public List<Task> GetAllTask(Guid groupTaskId) {
+        public List<Task> GetAllTask(ParamGetAllTask paramGetAllTask) {
             Dictionary<Guid, Task> taskMap = new Dictionary<Guid, Task>();
             Dictionary<string, object> param = new Dictionary<string, object>();
-            param.Add("GroupTaskQueryId", groupTaskId);
 
-            var result = (List<Task>)_dbConnection.Query<Task, User, Label, Task>("Proc_GetTasksGroupTask",
+            StringBuilder sql = new StringBuilder();
+            string sqlCondition = string.Empty;
+
+            if (paramGetAllTask.GroupTaskId != null)
+            {
+                sqlCondition += "GroupTaskId = @GroupTaskQueryId";
+                param.Add("GroupTaskQueryId", paramGetAllTask.GroupTaskId);
+            }
+            if (paramGetAllTask.ExecutingUserEmail != null)
+            {
+                sqlCondition += " AND AssignForEmail = @ExecutingUserEmail";
+                param.Add("ExecutingUserEmail", paramGetAllTask.ExecutingUserEmail);
+            }
+
+            sql.Append("Drop temporary table if exists TasksGroupTask;");
+            sql.Append($"Create temporary table TasksGroupTask Select td.* FROM Task td WHERE {sqlCondition};");
+            sql.Append($"SELECT " +
+                $"td.* ," +
+                $"us.Email," +
+                $"us.FirstName," +
+                $"us.LastName," +
+                $"fa.FileName as FileAvatarName," +
+                $"lb.LabelId," +
+                $"lb.NameLabel," +
+                $"lb.Color " +
+                $"FROM TasksGroupTask td " +
+                $"LEFT JOIN User us ON us.Email = td.AssignForEmail " +
+                $"LEFT JOIN TaskLabel tlb ON tlb.TaskId = td.TaskId " +
+                $"LEFT JOIN Label lb ON lb.LabelId = tlb.LabelId " +
+                $"LEFT JOIN FileAttachment fa ON fa.AttachmentId = us.UserId " +
+                $"WHERE td.GroupTaskId = @GroupTaskQueryId " +
+                $"ORDER BY td.SortOrder asc;");
+
+            var result = (List<Task>)_dbConnection.Query<Task, User, Label, Task>(sql.ToString(),
                 (task, userDoTask, label) =>
                 {
                     if (taskMap.ContainsKey((Guid)task.TaskId))
@@ -126,7 +159,7 @@ namespace DL.Business
                     return task;
                 },
                 param,
-                splitOn: "Email,LabelId", commandType: System.Data.CommandType.StoredProcedure);
+                splitOn: "Email,LabelId", commandType: System.Data.CommandType.Text);
             return (List<Task>)taskMap.Values.ToList();
         }
     }

@@ -82,13 +82,13 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
-        [HttpGet("alltask/{groupTaskId}")]
-        public IActionResult GetAllTask(Guid groupTaskId)
+        [HttpPost("alltask")]
+        public IActionResult GetAllTask([FromBody] ParamGetAllTask paramGetAllTask )
         {
             ServiceResult serviceResult = new ServiceResult();
             try
             {
-                serviceResult.Data = _iBLGroupTask.GetAllTask(groupTaskId);
+                serviceResult.Data = _iBLGroupTask.GetAllTask(paramGetAllTask);
             }
             catch (Exception ex)
             {

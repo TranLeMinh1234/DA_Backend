@@ -12,6 +12,6 @@ namespace BL.Interface
         public Dictionary<string, object> GetGroupTaskHaveJoined();
         public List<ClassModel.User.User> GetUserJoined(Guid groupTaskId);
         public TemplateGroupTask GetInfoTemplate(Guid groupTaskId, Guid templateReferenceId);
-        public List<Task> GetAllTask(Guid groupTaskId);
+        public List<Task> GetAllTask(ParamGetAllTask paramGetAllTask);
     }
 }
