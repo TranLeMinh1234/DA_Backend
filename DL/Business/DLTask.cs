@@ -106,7 +106,7 @@ namespace DL.Business
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskIdParam", taskId);
             var result = _dbConnection.Query<Task, User, User, User, Task>("Proc_GetFullInfoTask",
-                map: (task, userDoTask, userAssign, userCreate) =>
+                map: (task, userAssign, userDoTask, userCreate) =>
                 {
                     task.AssignedBy = userAssign;
                     task.AssignedFor = userDoTask;
@@ -199,6 +199,19 @@ namespace DL.Business
             }
 
             var result = _dbConnection.Execute(sqlBuilder.ToString(), param, commandType: CommandType.Text);
+            return result;
+        }
+
+        public int UpdateAssignForUser(Guid taskId, string assignForEmail, string assignedByEmail)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            string sql = "UPDATE Task Set AssignForEmail = @AssignForEmail, AssignedByEmail = @AssignedByEmail WHERE TaskId = @TaskId;";
+
+            param.Add("AssignForEmail", assignForEmail);
+            param.Add("AssignedByEmail", assignedByEmail);
+            param.Add("TaskId", taskId);
+
+            var result = _dbConnection.Execute(sql, param, commandType: CommandType.Text);
             return result;
         }
     }

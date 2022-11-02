@@ -36,5 +36,7 @@ namespace BL.Interface
         public System.Threading.Tasks.Task<ServiceResult> RemindTask(ParamRemindTask paramRemindTask);
 
         public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam);
+
+        public int UpdateAssignForUser(Guid taskId,Guid groupTaskId,string email);
     }
 }

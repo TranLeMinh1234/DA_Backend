@@ -23,5 +23,6 @@ namespace DL.Interface
         public int UpdateDeadline(string deadlineUpdate, DateTime? newDeadline, Guid taskId);
         public int InsertRemindDataStore(RemindDataStore remindDataStore);
         public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam);
+        public int UpdateAssignForUser(Guid taskId, string assignForEmail, string assignedByEmail);
     }
 }

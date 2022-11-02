@@ -37,5 +37,14 @@ namespace ClassModel
             Personal = 1,
             Group = 2
         }
+
+        public enum EnumTypeNotification { 
+            AddUserGroupTask = 1,
+            DeleteUserFromGroupTask = 2,
+            AssignedTask = 3,
+            DeletedTask = 4,
+            CommentedTask = 5,
+            RemindTask = 6
+        }
     }
 }

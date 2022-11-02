@@ -269,5 +269,20 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
+        
+        [HttpPut("assignforuser/{groupTaskId}/{taskId}/{email}")]
+        public IActionResult UpdateAssignForUser(Guid groupTaskId, Guid taskId,string email)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.UpdateAssignForUser(taskId, groupTaskId, email);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Ok(serviceResult);
+        }
     }
 }

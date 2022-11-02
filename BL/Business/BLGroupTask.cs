@@ -1,4 +1,5 @@
 ﻿using BL.Interface;
+using ClassModel.Notification;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using ClassModel.User;
@@ -7,6 +8,7 @@ using Service;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static ClassModel.Enumeration;
 
 namespace BL.Business
 {
@@ -14,11 +16,13 @@ namespace BL.Business
     {
         private IDLGroupTask _iDLGroupTask;
         private ContextRequest _contextRequest;
+        private IBLNotification _iBlNotification;
 
-        public BLGroupTask(IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
+        public BLGroupTask(IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
         {
             _iDLGroupTask = iDLGroupTask;
             _contextRequest = contextRequest;
+            _iBlNotification = iBLNotification;
         }
 
         public GroupTask InsertCustom(ParamInserGroupTask paramInserGroupTask) {
@@ -27,9 +31,10 @@ namespace BL.Business
             groupTask.CreatedTime = DateTime.Now;
 
             Guid?  newIdGroupTask = _iDLGroupTask.Insert(groupTask);
-            if (newIdGroupTask != null)
+            if (newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Group)
             {
                 List<JoinedGroupTask> listJoinedGroupTask = new List<JoinedGroupTask>();
+                List<Notification> listNotification = new List<Notification>();
                 foreach (ClassModel.User.User userJoin in paramInserGroupTask.ListUser)
                 {
                     JoinedGroupTask joinedGroupTask = new JoinedGroupTask() {
@@ -40,10 +45,27 @@ namespace BL.Business
                         GroupTaskReferenceId = newIdGroupTask,
                         RoleReferenceId = userJoin.Role.RoleId
                     };
+
+                    if (userJoin.Email != _contextRequest.GetEmailCurrentUser())
+                    {
+                        Notification notification = new Notification()
+                        {
+                            CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                            NotificationId = null,
+                            GroupTaskRelateId = newIdGroupTask,
+                            NotifyForEmail = userJoin.Email,
+                            TaskRelateId = null,
+                            TypeNoti = (int)EnumTypeNotification.AddUserGroupTask,
+                            CreatedTime = DateTime.Now
+                        };
+                        listNotification.Add(notification);
+                    }
+
                     listJoinedGroupTask.Add(joinedGroupTask);
                 }
 
                 _iDLGroupTask.InsertBatchJoinedGroupTask(listJoinedGroupTask);
+                _iBlNotification.InsertBatch(listNotification);
             }
 
             return groupTask;

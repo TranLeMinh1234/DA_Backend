@@ -1,5 +1,6 @@
 ﻿using BL.Interface;
 using ClassModel;
+using ClassModel.Notification;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using DL.Interface;
@@ -15,14 +16,16 @@ namespace BL.Business
     public class BLTask : BLBase, IBLTask
     {
         private IDLTask _iDLTask;
+        private IBLNotification _iBLNotification;
         private ContextRequest _contextRequest;
         private RemindTaskService _iRemindTaskService;
 
-        public BLTask(IDLTask iDLTask, ContextRequest contextRequest, RemindTaskService remindTaskService) : base(iDLTask, contextRequest)
+        public BLTask(IBLNotification iBLNotification ,IDLTask iDLTask, ContextRequest contextRequest, RemindTaskService remindTaskService) : base(iDLTask, contextRequest)
         {
             _iDLTask = iDLTask;
             _contextRequest = contextRequest;
             _iRemindTaskService = remindTaskService;
+            _iBLNotification = iBLNotification;
         }
 
         public Task InsertChildTask(Task newTask)
@@ -136,7 +139,26 @@ namespace BL.Business
         }
 
         public int DeleteCustom(Guid taskId) {
+            Task task = _iDLTask.GetFullInfo(taskId);
+
             var result = _iDLTask.DeleteCustom(taskId);
+            
+            if (task.AssignedByEmail != _contextRequest.GetEmailCurrentUser())
+            {
+                Notification notification = new Notification()
+                {
+                    CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                    NotificationId = null,
+                    GroupTaskRelateId = task.GroupTaskId,
+                    NotifyForEmail = task.AssignForEmail,
+                    TaskRelateId = task.TaskId,
+                    TypeNoti = (int)EnumTypeNotification.DeletedTask,
+                    CreatedTime = DateTime.Now
+                };
+
+                _iBLNotification.Insert(notification);
+            }
+
             return result;
         }
 
@@ -225,5 +247,28 @@ namespace BL.Business
             var result = _iDLTask.UpdateTaskProcessBatch(listParam);
             return result;
         }
+
+        public int UpdateAssignForUser(Guid taskId, Guid groupTaskId, string email) {
+            Notification notification = new Notification()
+            {
+                CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                NotificationId = null,
+                GroupTaskRelateId = groupTaskId,
+                NotifyForEmail = email,
+                TaskRelateId = taskId,
+                TypeNoti = (int)EnumTypeNotification.AssignedTask,
+                CreatedTime = DateTime.Now
+            };
+
+             
+            var result = _iDLTask.UpdateAssignForUser(taskId, email, _contextRequest.GetEmailCurrentUser());
+
+            if (result > 0)
+            {
+                _iBLNotification.Insert(notification);
+            }
+            return result;
+        }
+        
     }
 }
