@@ -56,6 +56,7 @@ namespace BL.Business
                             NotifyForEmail = userJoin.Email,
                             TaskRelateId = null,
                             TypeNoti = (int)EnumTypeNotification.AddUserGroupTask,
+                            RoleRelateId = userJoin.Role.RoleId,
                             CreatedTime = DateTime.Now
                         };
                         listNotification.Add(notification);

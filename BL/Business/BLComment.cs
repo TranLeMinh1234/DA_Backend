@@ -37,18 +37,37 @@ namespace BL.Business
             if (result != null)
             {
                 Task task = _iDLTask.GetFullInfo(taskId);
-                Notification notification = new Notification()
+                if (task.AssignForEmail != _contextRequest.GetEmailCurrentUser())
                 {
-                    CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
-                    NotificationId = null,
-                    GroupTaskRelateId = task.GroupTaskId,
-                    NotifyForEmail = task.AssignForEmail,
-                    TaskRelateId = taskId,
-                    TypeNoti = (int)EnumTypeNotification.CommentedTask,
-                    CreatedTime = DateTime.Now
-                };
+                    Notification notificationForUserExecute = new Notification()
+                    {
+                        CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                        NotificationId = null,
+                        GroupTaskRelateId = task.GroupTaskId,
+                        NotifyForEmail = task.AssignForEmail,
+                        TaskRelateId = taskId,
+                        TypeNoti = (int)EnumTypeNotification.CommentedTask,
+                        CreatedTime = DateTime.Now
+                    };
 
-                _iBLNotification.Insert(notification);
+                    _iBLNotification.Insert(notificationForUserExecute);
+                }
+
+                if (task.AssignedByEmail != _contextRequest.GetEmailCurrentUser())
+                {
+                    Notification notificationForUserAssign = new Notification()
+                    {
+                        CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                        NotificationId = null,
+                        GroupTaskRelateId = task.GroupTaskId,
+                        NotifyForEmail = task.AssignedByEmail,
+                        TaskRelateId = taskId,
+                        TypeNoti = (int)EnumTypeNotification.CommentedTask,
+                        CreatedTime = DateTime.Now
+                    };
+
+                    _iBLNotification.Insert(notificationForUserAssign);
+                }
             }
 
             return comment;

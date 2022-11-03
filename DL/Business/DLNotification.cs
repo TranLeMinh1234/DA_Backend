@@ -43,16 +43,17 @@ namespace DL.Business
             param.Add("StartIndexTake", startIndexTake);
             param.Add("NumberOfRecordTake", numberOfRecordTake);
 
-            var result = _dbConnection.Query<Notification, User, Task, GroupTask, Notification>("Proc_GetPagingNotification",
-                (notification, user, task, groupTask) =>
+            var result = _dbConnection.Query<Notification, User, Task, GroupTask,Role, Notification>("Proc_GetPagingNotification",
+                (notification, user, task, groupTask, role) =>
                 {
                     notification.CreatedBy = user;
                     notification.Task = task;
                     notification.GroupTask = groupTask;
+                    notification.Role = role;
 
                     return notification;
                 }
-                , param, splitOn: "Email,TaskId,GroupTaskId", commandType: System.Data.CommandType.StoredProcedure).AsList();
+                , param, splitOn: "Email,TaskId,GroupTaskId,RoleId", commandType: System.Data.CommandType.StoredProcedure).AsList();
             
             return result;
         }

@@ -143,7 +143,7 @@ namespace BL.Business
 
             var result = _iDLTask.DeleteCustom(taskId);
             
-            if (task.AssignedByEmail != _contextRequest.GetEmailCurrentUser())
+            if (task.AssignForEmail != _contextRequest.GetEmailCurrentUser())
             {
                 Notification notification = new Notification()
                 {
@@ -153,7 +153,8 @@ namespace BL.Business
                     NotifyForEmail = task.AssignForEmail,
                     TaskRelateId = task.TaskId,
                     TypeNoti = (int)EnumTypeNotification.DeletedTask,
-                    CreatedTime = DateTime.Now
+                    CreatedTime = DateTime.Now,
+                    TaskName = task.TaskName
                 };
 
                 _iBLNotification.Insert(notification);
@@ -249,6 +250,8 @@ namespace BL.Business
         }
 
         public int UpdateAssignForUser(Guid taskId, Guid groupTaskId, string email) {
+
+            Task task = _iDLTask.GetFullInfo(taskId);
             Notification notification = new Notification()
             {
                 CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
@@ -257,7 +260,8 @@ namespace BL.Business
                 NotifyForEmail = email,
                 TaskRelateId = taskId,
                 TypeNoti = (int)EnumTypeNotification.AssignedTask,
-                CreatedTime = DateTime.Now
+                CreatedTime = DateTime.Now,
+                TaskName = task.TaskName
             };
 
              
