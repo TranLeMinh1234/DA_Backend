@@ -25,5 +25,10 @@ namespace BL.Business
             var result = _iDLNotification.InsertBatch(listNotification);
             return result;
         }
+
+        public List<Notification> GetPagingCustom(string email, int startIndexTake, int numberOfRecordTake) {
+            var result = _iDLNotification.GetPagingCustom(email,startIndexTake,numberOfRecordTake);
+            return result;
+        }
     }
 }

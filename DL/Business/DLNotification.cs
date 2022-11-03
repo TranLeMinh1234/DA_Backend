@@ -1,4 +1,5 @@
 ﻿using ClassModel.Notification;
+using ClassModel.TaskRelate;
 using ClassModel.User;
 using Dapper;
 using DL.Interface;
@@ -32,6 +33,27 @@ namespace DL.Business
             string sql = $"INSERT INTO Notification (NotificationId,TypeNoti,CreatedByEmail,NotifyForEmail,TaskRelateId,GroupTaskRelateId,CreatedTime) VALUES {sqlValuesInsert.ToString()};";
 
             var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            return result;
+        }
+
+        public List<Notification> GetPagingCustom(string email, int startIndexTake, int numberOfRecordTake) {
+            
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("EmailQuery", email);
+            param.Add("StartIndexTake", startIndexTake);
+            param.Add("NumberOfRecordTake", numberOfRecordTake);
+
+            var result = _dbConnection.Query<Notification, User, Task, GroupTask, Notification>("Proc_GetPagingNotification",
+                (notification, user, task, groupTask) =>
+                {
+                    notification.CreatedBy = user;
+                    notification.Task = task;
+                    notification.GroupTask = groupTask;
+
+                    return notification;
+                }
+                , param, splitOn: "Email,TaskId,GroupTaskId", commandType: System.Data.CommandType.StoredProcedure).AsList();
+            
             return result;
         }
     }
