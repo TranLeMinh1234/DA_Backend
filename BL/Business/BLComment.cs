@@ -2,6 +2,7 @@
 using ClassModel.Notification;
 using ClassModel.TaskRelate;
 using DL.Interface;
+using Newtonsoft.Json;
 using Service;
 using System;
 using System.Collections.Generic;
@@ -17,13 +18,15 @@ namespace BL.Business
         private ContextRequest _contextRequest;
         private IDLTask _iDLTask;
         private IBLNotification _iBLNotification;
+        private WebsocketConnectionManager _websocketConnectionManager;
 
-        public BLComment(IBLNotification iBLNotification, IDLTask iDLTask, IDLComment iDLComment, ContextRequest contextRequest) : base(iDLComment, contextRequest)
+        public BLComment(WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification, IDLTask iDLTask, IDLComment iDLComment, ContextRequest contextRequest) : base(iDLComment, contextRequest)
         {
             _iDLComment = iDLComment;
             _contextRequest = contextRequest;
             _iDLTask = iDLTask;
             _iBLNotification = iBLNotification;
+            _websocketConnectionManager = websocketConnectionManager;
         }
 
         public Comment InsertCustom(Guid taskId, Comment comment)
@@ -51,6 +54,8 @@ namespace BL.Business
                     };
 
                     _iBLNotification.Insert(notificationForUserExecute);
+                    notificationForUserExecute.Task = task;
+                    System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(task.AssignForEmail, JsonConvert.SerializeObject(notificationForUserExecute)));
                 }
 
                 if (task.AssignedByEmail != _contextRequest.GetEmailCurrentUser())
@@ -67,6 +72,9 @@ namespace BL.Business
                     };
 
                     _iBLNotification.Insert(notificationForUserAssign);
+
+                    notificationForUserAssign.Task = task;
+                    System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(task.AssignedByEmail, JsonConvert.SerializeObject(notificationForUserAssign)));
                 }
             }
 

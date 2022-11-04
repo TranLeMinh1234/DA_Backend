@@ -107,6 +107,7 @@ namespace DA_Backend
 
             //service
             services.UseContextRequestService();
+            services.UseWebSocketConnectionManagerService();
             services.UseRemindTaskService();
         }
 
@@ -130,7 +131,9 @@ namespace DA_Backend
 
             app.UseDetectContextMiddleWare();
 
-            //app.UseWebSockets();
+            app.UseWebSockets();
+
+            app.UseWebSocketMiddleWare();
 
             app.UseEndpoints(endpoints =>
             {

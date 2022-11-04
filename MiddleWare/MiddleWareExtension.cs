@@ -11,5 +11,10 @@ namespace MiddleWare
         {
             return applicationBuilder.UseMiddleware<DetectContextMiddleWare>();
         }
+
+        public static IApplicationBuilder UseWebSocketMiddleWare(this IApplicationBuilder applicationBuilder)
+        {
+            return applicationBuilder.UseMiddleware<WebSocketMiddleWare>();
+        }
     }
 }
