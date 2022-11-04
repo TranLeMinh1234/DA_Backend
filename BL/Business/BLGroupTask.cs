@@ -4,9 +4,11 @@ using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using ClassModel.User;
 using DL.Interface;
+using Newtonsoft.Json;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
 using static ClassModel.Enumeration;
 
@@ -17,12 +19,14 @@ namespace BL.Business
         private IDLGroupTask _iDLGroupTask;
         private ContextRequest _contextRequest;
         private IBLNotification _iBlNotification;
+        private WebsocketConnectionManager _websocketConnectionManager;
 
-        public BLGroupTask(IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
+        public BLGroupTask(WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
         {
             _iDLGroupTask = iDLGroupTask;
             _contextRequest = contextRequest;
             _iBlNotification = iBLNotification;
+            _websocketConnectionManager = websocketConnectionManager;
         }
 
         public GroupTask InsertCustom(ParamInserGroupTask paramInserGroupTask) {
@@ -57,7 +61,8 @@ namespace BL.Business
                             TaskRelateId = null,
                             TypeNoti = (int)EnumTypeNotification.AddUserGroupTask,
                             RoleRelateId = userJoin.Role.RoleId,
-                            CreatedTime = DateTime.Now
+                            CreatedTime = DateTime.Now,
+                            ReadStatus = false
                         };
                         listNotification.Add(notification);
                     }
@@ -67,6 +72,11 @@ namespace BL.Business
 
                 _iDLGroupTask.InsertBatchJoinedGroupTask(listJoinedGroupTask);
                 _iBlNotification.InsertBatch(listNotification);
+
+                foreach (var notification in listNotification)
+                {
+                    System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+                }
             }
 
             return groupTask;

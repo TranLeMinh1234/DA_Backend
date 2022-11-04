@@ -4,6 +4,7 @@ using ClassModel.Notification;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using DL.Interface;
+using Newtonsoft.Json;
 using Service;
 using Service.Interface;
 using System;
@@ -19,13 +20,15 @@ namespace BL.Business
         private IBLNotification _iBLNotification;
         private ContextRequest _contextRequest;
         private RemindTaskService _iRemindTaskService;
+        private WebsocketConnectionManager _websocketConnectionManager;
 
-        public BLTask(IBLNotification iBLNotification ,IDLTask iDLTask, ContextRequest contextRequest, RemindTaskService remindTaskService) : base(iDLTask, contextRequest)
+        public BLTask(WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification ,IDLTask iDLTask, ContextRequest contextRequest, RemindTaskService remindTaskService) : base(iDLTask, contextRequest)
         {
             _iDLTask = iDLTask;
             _contextRequest = contextRequest;
             _iRemindTaskService = remindTaskService;
             _iBLNotification = iBLNotification;
+            _websocketConnectionManager = websocketConnectionManager;
         }
 
         public Task InsertChildTask(Task newTask)
@@ -154,10 +157,12 @@ namespace BL.Business
                     TaskRelateId = task.TaskId,
                     TypeNoti = (int)EnumTypeNotification.DeletedTask,
                     CreatedTime = DateTime.Now,
-                    TaskName = task.TaskName
+                    TaskName = task.TaskName,
+                    ReadStatus = false
                 };
 
                 _iBLNotification.Insert(notification);
+                System.Threading.Tasks.Task.Run(()=> _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail,JsonConvert.SerializeObject(notification)));
             }
 
             return result;
@@ -261,7 +266,8 @@ namespace BL.Business
                 TaskRelateId = taskId,
                 TypeNoti = (int)EnumTypeNotification.AssignedTask,
                 CreatedTime = DateTime.Now,
-                TaskName = task.TaskName
+                TaskName = task.TaskName,
+                ReadStatus = false
             };
 
              
@@ -270,6 +276,8 @@ namespace BL.Business
             if (result > 0)
             {
                 _iBLNotification.Insert(notification);
+                notification.Task = task;
+                System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
             }
             return result;
         }

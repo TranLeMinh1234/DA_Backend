@@ -28,6 +28,8 @@ namespace ClassModel.Notification
         public string TaskName { get; set; }
         [AddDatabase]
         public string NameGroupTask { get; set; }
+        [AddDatabase]
+        public bool ReadStatus { get; set; }
 
         public ClassModel.TaskRelate.GroupTask GroupTask { get; set; }
         public ClassModel.TaskRelate.Task Task { get; set; }

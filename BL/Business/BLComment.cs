@@ -18,15 +18,17 @@ namespace BL.Business
         private ContextRequest _contextRequest;
         private IDLTask _iDLTask;
         private IBLNotification _iBLNotification;
+        private IDLUser _iDLUser;
         private WebsocketConnectionManager _websocketConnectionManager;
 
-        public BLComment(WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification, IDLTask iDLTask, IDLComment iDLComment, ContextRequest contextRequest) : base(iDLComment, contextRequest)
+        public BLComment(IDLUser iDLUser,WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification, IDLTask iDLTask, IDLComment iDLComment, ContextRequest contextRequest) : base(iDLComment, contextRequest)
         {
             _iDLComment = iDLComment;
             _contextRequest = contextRequest;
             _iDLTask = iDLTask;
             _iBLNotification = iBLNotification;
             _websocketConnectionManager = websocketConnectionManager;
+            _iDLUser = iDLUser;
         }
 
         public Comment InsertCustom(Guid taskId, Comment comment)
@@ -40,6 +42,7 @@ namespace BL.Business
             if (result != null)
             {
                 Task task = _iDLTask.GetFullInfo(taskId);
+                ClassModel.User.User user = _iDLUser.GetUserInfo(_contextRequest.GetEmailCurrentUser());
                 if (task.AssignForEmail != _contextRequest.GetEmailCurrentUser())
                 {
                     Notification notificationForUserExecute = new Notification()
@@ -50,11 +53,13 @@ namespace BL.Business
                         NotifyForEmail = task.AssignForEmail,
                         TaskRelateId = taskId,
                         TypeNoti = (int)EnumTypeNotification.CommentedTask,
-                        CreatedTime = DateTime.Now
+                        CreatedTime = DateTime.Now,
+                        ReadStatus = false
                     };
 
                     _iBLNotification.Insert(notificationForUserExecute);
                     notificationForUserExecute.Task = task;
+                    notificationForUserExecute.CreatedBy = user;
                     System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(task.AssignForEmail, JsonConvert.SerializeObject(notificationForUserExecute)));
                 }
 
@@ -68,12 +73,14 @@ namespace BL.Business
                         NotifyForEmail = task.AssignedByEmail,
                         TaskRelateId = taskId,
                         TypeNoti = (int)EnumTypeNotification.CommentedTask,
-                        CreatedTime = DateTime.Now
+                        CreatedTime = DateTime.Now,
+                        ReadStatus = false
                     };
 
                     _iBLNotification.Insert(notificationForUserAssign);
 
                     notificationForUserAssign.Task = task;
+                    notificationForUserAssign.CreatedBy = user;
                     System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(task.AssignedByEmail, JsonConvert.SerializeObject(notificationForUserAssign)));
                 }
             }
