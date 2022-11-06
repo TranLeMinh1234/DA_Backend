@@ -44,6 +44,8 @@ namespace BL.Business
                 newTask.SortOrder = 1;
 
             _iDLTask.Insert(newTask);
+
+            newTask = _iDLTask.GetFullInfo((Guid)newTask.TaskId);
             return newTask;
         }
 
@@ -281,6 +283,11 @@ namespace BL.Business
             }
             return result;
         }
-        
+
+        public bool CheckExistsTask(Guid taskId) {
+            var result = _iDLTask.CheckExistsTask(taskId);
+            return result;
+        }
+
     }
 }

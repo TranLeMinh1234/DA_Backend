@@ -23,5 +23,10 @@ namespace BL.Business
             var result = _iDLCheckTask.GetCheckTasks(taskId);
             return result;
         }
+
+        public int UpdateStatusBatch(List<CheckTask> listCheckTask) {
+            var result = _iDLCheckTask.UpdateStatusBatch(listCheckTask);
+            return result;
+        }
     }
 }

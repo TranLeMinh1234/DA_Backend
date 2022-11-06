@@ -40,7 +40,7 @@ namespace DL.Business
 
         public List<Task> GetChildTask(Guid taskId)
         {
-            string sql = $"SELECT * FROM Task WHERE PathTreeTask like @TaskId;";
+            string sql = $"SELECT * FROM Task WHERE PathTreeTask like @TaskId ORDER BY SortOrder asc;";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", "%" + taskId.ToString());
             var result = (List<Task>)_dbConnection.Query<Task>(sql, param, commandType: System.Data.CommandType.Text);
@@ -212,6 +212,15 @@ namespace DL.Business
             param.Add("TaskId", taskId);
 
             var result = _dbConnection.Execute(sql, param, commandType: CommandType.Text);
+            return result;
+        }
+
+        public bool CheckExistsTask(Guid taskId) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("TaskId", taskId);
+
+            string sql = "SELECT Exists(Select * FROM Task WHERE TaskId = @TaskId);";
+            var result = _dbConnection.Query<bool>(sql, param, commandType: CommandType.Text).FirstOrDefault();
             return result;
         }
     }

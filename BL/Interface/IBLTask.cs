@@ -38,5 +38,7 @@ namespace BL.Interface
         public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam);
 
         public int UpdateAssignForUser(Guid taskId,Guid groupTaskId,string email);
+
+        public bool CheckExistsTask(Guid taskId);
     }
 }

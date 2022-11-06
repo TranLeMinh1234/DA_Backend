@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Collections.Generic;
 
 namespace DA_Backend.Controllers
 {
@@ -28,6 +29,22 @@ namespace DA_Backend.Controllers
             try
             {
                 serviceResult.Data = _iBLCheckTask.GetCheckTasks(taskId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+
+        [HttpPut("updateStatusBatch")]
+        public IActionResult UpdateStatusBatch([FromBody] List<CheckTask> listCheckTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLCheckTask.UpdateStatusBatch(listCheckTask);
             }
             catch (Exception ex)
             {

@@ -8,5 +8,7 @@ namespace BL.Interface
     public interface IBLCheckTask : IBLBase
     {
         public List<CheckTask> GetCheckTasks(Guid taskId);
+
+        public int UpdateStatusBatch(List<CheckTask> listCheckTask);
     }
 }

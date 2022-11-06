@@ -284,5 +284,20 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpGet("checkexists/{taskId}")]
+        public IActionResult CheckExistsTask(Guid taskId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.CheckExistsTask(taskId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Ok(serviceResult);
+        }
     }
 }

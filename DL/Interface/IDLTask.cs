@@ -24,5 +24,6 @@ namespace DL.Interface
         public int InsertRemindDataStore(RemindDataStore remindDataStore);
         public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam);
         public int UpdateAssignForUser(Guid taskId, string assignForEmail, string assignedByEmail);
+        public bool CheckExistsTask(Guid taskId);
     }
 }

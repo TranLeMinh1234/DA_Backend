@@ -54,7 +54,8 @@ namespace BL.Business
                         TaskRelateId = taskId,
                         TypeNoti = (int)EnumTypeNotification.CommentedTask,
                         CreatedTime = DateTime.Now,
-                        ReadStatus = false
+                        ReadStatus = false,
+                        TaskName = task.TaskName
                     };
 
                     _iBLNotification.Insert(notificationForUserExecute);
@@ -74,7 +75,8 @@ namespace BL.Business
                         TaskRelateId = taskId,
                         TypeNoti = (int)EnumTypeNotification.CommentedTask,
                         CreatedTime = DateTime.Now,
-                        ReadStatus = false
+                        ReadStatus = false,
+                        TaskName = task.TaskName
                     };
 
                     _iBLNotification.Insert(notificationForUserAssign);

@@ -8,5 +8,7 @@ namespace DL.Interface
     public interface IDLCheckTask : IDLBase
     {
         public List<CheckTask> GetCheckTasks(Guid taskId);
+
+        public int UpdateStatusBatch(List<CheckTask> listCheckTask);
     }
 }
