@@ -39,11 +39,16 @@ namespace DL.Business
         }
 
         public List<Task> GetChildTask(Guid taskId)
-        {
-            string sql = $"SELECT * FROM Task WHERE PathTreeTask like @TaskId ORDER BY SortOrder asc;";
+        { 
             Dictionary<string, object> param = new Dictionary<string, object>();
-            param.Add("TaskId", "%" + taskId.ToString());
-            var result = (List<Task>)_dbConnection.Query<Task>(sql, param, commandType: System.Data.CommandType.Text);
+            param.Add("TaskQueryId", "%" + taskId.ToString());
+            var result = (List<Task>)_dbConnection.Query<Task,ClassModel.User.User,Task>("Proc_GetChildTask",
+                (task,user) => {
+                    task.AssignedFor = user;
+                    return task;
+                },
+                param,
+                splitOn: "Email",commandType: System.Data.CommandType.StoredProcedure);
             return result;
         }
 
