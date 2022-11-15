@@ -1,12 +1,16 @@
 ﻿using BL.Interface;
 using ClassModel;
+using ClassModel.Notification;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
 using DL.Interface;
+using Newtonsoft.Json;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using static ClassModel.Enumeration;
 
 namespace BL.Business
 {
@@ -14,11 +18,15 @@ namespace BL.Business
     {
         private IDLTemplateGroupTask _iDLTemplateGroupTask;
         private ContextRequest _contextRequest;
+        private IBLTask _iBLTask;
+        private WebsocketConnectionManager _websocketConnectionManager;
 
-        public BLTemplateGroupTask(IDLTemplateGroupTask iDLTemplateGroupTask, ContextRequest contextRequest) : base(iDLTemplateGroupTask, contextRequest)
+        public BLTemplateGroupTask(WebsocketConnectionManager websocketConnectionManager, IBLTask iBLTask,IDLTemplateGroupTask iDLTemplateGroupTask, ContextRequest contextRequest) : base(iDLTemplateGroupTask, contextRequest)
         {
             _iDLTemplateGroupTask = iDLTemplateGroupTask;
             _contextRequest = contextRequest;
+            _iBLTask = iBLTask;
+            _websocketConnectionManager = websocketConnectionManager;
         }
 
         public TemplateGroupTask InsertCustom(TemplateGroupTask templateGroupTask)
@@ -98,6 +106,20 @@ namespace BL.Business
 
         public int UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam) {
             var result = _iDLTemplateGroupTask.UpdateSortOrderProcesses(listParam);
+            List<string> sentEmails = _iBLTask.GetEmailUserJoined((Guid)listParam.ElementAt(0).GroupTaskId);
+            if (sentEmails?.Count > 0)
+            {
+                foreach (var email in sentEmails)
+                {
+                    if (email != _contextRequest.GetEmailCurrentUser())
+                    {
+                        Notification notificationReload = new Notification() { 
+                            TypeNoti = (int)EnumTypeNotification.ReloadGroupTask
+                        };
+                        System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(email, JsonConvert.SerializeObject(notificationReload)));
+                    }
+                }
+            }
             return result;
         }
     }

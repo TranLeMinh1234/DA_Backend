@@ -25,5 +25,6 @@ namespace DL.Interface
         public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam);
         public int UpdateAssignForUser(Guid taskId, string assignForEmail, string assignedByEmail);
         public bool CheckExistsTask(Guid taskId);
+        public List<string> GetEmailUserJoined(Guid groupTaskId);
     }
 }

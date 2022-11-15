@@ -29,7 +29,7 @@ namespace BL.Interface
 
         public List<Task> GetDailyTask(ParamDailyTask paramDailyTask);
 
-        public int DeleteCustom(Guid taskId);
+        public int DeleteCustom(Guid taskId, bool isNotification = true);
 
         public int UpdateDeadline(int typeDeadline, DateTime? newDeadline, Guid taskId);
 
@@ -40,5 +40,7 @@ namespace BL.Interface
         public int UpdateAssignForUser(Guid taskId,Guid groupTaskId,string email);
 
         public bool CheckExistsTask(Guid taskId);
+
+        public List<string> GetEmailUserJoined(Guid groupTaskId);
     }
 }

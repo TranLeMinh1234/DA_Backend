@@ -35,5 +35,20 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpGet("numberofnewnotification")]
+        public IActionResult GetNumberOfNewNotification()
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLNotification.GetNumberOfNewNotification();
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

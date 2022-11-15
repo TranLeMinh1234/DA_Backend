@@ -5,6 +5,7 @@ using DL.Interface;
 using Service;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BL.Business
@@ -27,7 +28,30 @@ namespace BL.Business
         }
 
         public List<Notification> GetPagingCustom(string email, int startIndexTake, int numberOfRecordTake) {
-            var result = _iDLNotification.GetPagingCustom(email,startIndexTake,numberOfRecordTake);
+            var result = _iDLNotification.GetPagingCustom(email, startIndexTake, numberOfRecordTake);
+            if (result?.Count > 0)
+            {
+                string notificationIds = String.Empty;
+                foreach (var notification in result)
+                {
+                    if (!notification.ReadStatus)
+                        notificationIds += $"{notification.NotificationId},";
+                }
+
+
+                if (notificationIds.Length > 1)
+                {
+                    notificationIds = notificationIds.Remove(notificationIds.Length - 1);
+                    _iDLNotification.TickReadNotification(notificationIds);
+                }
+            }
+
+            return result;
+        }
+
+        public int GetNumberOfNewNotification()
+        {
+            var result = _iDLNotification.GetNumberOfNewNotification(_contextRequest.GetEmailCurrentUser());
             return result;
         }
     }

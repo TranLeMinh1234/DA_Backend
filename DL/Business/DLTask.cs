@@ -228,5 +228,15 @@ namespace DL.Business
             var result = _dbConnection.Query<bool>(sql, param, commandType: CommandType.Text).FirstOrDefault();
             return result;
         }
+
+        public List<string> GetEmailUserJoined(Guid groupTaskId)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("GroupTaskQueryId", groupTaskId);
+
+            string sql = "SELECT UserJoinedEmail FROM JoinedGroupTask WHERE GroupTaskReferenceId = @GroupTaskQueryId;";
+            var result = _dbConnection.Query<string>(sql, param, commandType: System.Data.CommandType.Text).AsList();
+            return result;
+        }
     }
 }

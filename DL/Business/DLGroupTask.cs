@@ -162,5 +162,14 @@ namespace DL.Business
                 splitOn: "Email,LabelId", commandType: System.Data.CommandType.Text);
             return (List<Task>)taskMap.Values.ToList();
         }
+
+        public int DeleteCustom(ParamDeletGroupTask paramDeletGroupTask)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("GroupTaskQueryId", paramDeletGroupTask.GroupTaskId);
+
+            var result = _dbConnection.Execute("Proc_DeleteGroupTask", param,commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
     }
 }

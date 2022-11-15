@@ -9,5 +9,7 @@ namespace DL.Interface
     {
         public int InsertBatch(List<Notification> listNotification);
         public List<Notification> GetPagingCustom(string email, int startIndexTake, int numberOfRecordTake);
+        public int TickReadNotification(string notificationIds);
+        public int GetNumberOfNewNotification(string email);
     }
 }

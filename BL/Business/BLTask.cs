@@ -3,6 +3,7 @@ using ClassModel;
 using ClassModel.Notification;
 using ClassModel.ParamApi;
 using ClassModel.TaskRelate;
+using DL.Business;
 using DL.Interface;
 using Newtonsoft.Json;
 using Service;
@@ -52,7 +53,7 @@ namespace BL.Business
         public List<Task> GetChildTask(Guid taskId)
         {
             var result = _iDLTask.GetChildTask(taskId);
-            return result;
+            return result;  
         }
 
         public int InsertLabelsTask(Guid taskId, List<string> listLabelId) {
@@ -130,7 +131,30 @@ namespace BL.Business
             var newIdTask = _iDLTask.Insert(newTask);
             newTask.TaskId = newIdTask;
 
+            if (newIdTask != null && newTask.TypeTask != EnumTypeTask.Personal)
+            {
+                //nhac nho reload thong tin toan bo grouptask
+                Notification notificationReload = new Notification()
+                { 
+                    TypeNoti = (int)EnumTypeNotification.ReloadGroupTask
+                };
+
+                List<string> sentEmails = GetEmailUserJoined((Guid)newTask.GroupTaskId);
+                foreach (var email in sentEmails) {
+                    if (email != _contextRequest.GetEmailCurrentUser()) {
+                        System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(email, JsonConvert.SerializeObject(notificationReload)));
+                    }
+                    
+                }
+            }
+
             return newTask;
+        }
+
+        public List<string> GetEmailUserJoined(Guid groupTaskId)
+        {
+            var result = _iDLTask.GetEmailUserJoined(groupTaskId);
+            return result;
         }
 
         public Task GetFullInfo(Guid taskId) {
@@ -143,12 +167,12 @@ namespace BL.Business
             return result;
         }
 
-        public int DeleteCustom(Guid taskId) {
+        public int DeleteCustom(Guid taskId, bool isNotification = true) {
             Task task = _iDLTask.GetFullInfo(taskId);
 
             var result = _iDLTask.DeleteCustom(taskId);
             
-            if (task.AssignForEmail != _contextRequest.GetEmailCurrentUser())
+            if (task.AssignForEmail != _contextRequest.GetEmailCurrentUser() && isNotification)
             {
                 Notification notification = new Notification()
                 {

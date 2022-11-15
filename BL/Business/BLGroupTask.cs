@@ -20,13 +20,15 @@ namespace BL.Business
         private ContextRequest _contextRequest;
         private IBLNotification _iBlNotification;
         private WebsocketConnectionManager _websocketConnectionManager;
+        private IBLTask _iBLTask;
 
-        public BLGroupTask(WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
+        public BLGroupTask(IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
         {
             _iDLGroupTask = iDLGroupTask;
             _contextRequest = contextRequest;
             _iBlNotification = iBLNotification;
             _websocketConnectionManager = websocketConnectionManager;
+            _iBLTask = iBLTask;
         }
 
         public GroupTask InsertCustom(ParamInserGroupTask paramInserGroupTask) {
@@ -35,7 +37,7 @@ namespace BL.Business
             groupTask.CreatedTime = DateTime.Now;
 
             Guid?  newIdGroupTask = _iDLGroupTask.Insert(groupTask);
-            if (newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Group)
+            if (newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Group || newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Personal)
             {
                 List<JoinedGroupTask> listJoinedGroupTask = new List<JoinedGroupTask>();
                 List<Notification> listNotification = new List<Notification>();
@@ -71,7 +73,10 @@ namespace BL.Business
                 }
 
                 _iDLGroupTask.InsertBatchJoinedGroupTask(listJoinedGroupTask);
-                _iBlNotification.InsertBatch(listNotification);
+                if (listNotification.Count > 0)
+                {
+                    _iBlNotification.InsertBatch(listNotification);
+                }
 
                 foreach (var notification in listNotification)
                 {
@@ -99,6 +104,50 @@ namespace BL.Business
 
         public List<Task> GetAllTask(ParamGetAllTask paramGetAllTask) {
             var result = _iDLGroupTask.GetAllTask(paramGetAllTask);
+            return result;
+        }
+
+        public int DeleteCustom(ParamDeletGroupTask paramDeletGroupTask) {
+
+            List<ClassModel.User.User> listUserJoined = _iDLGroupTask.GetUserJoined((Guid)paramDeletGroupTask.GroupTaskId);
+            List<Notification> listNotification = new List<Notification>();
+            List<Guid> listTaskId = paramDeletGroupTask.ListTaskId;
+            GroupTask groupTask = _iDLGroupTask.GetById<GroupTask>((Guid)paramDeletGroupTask.GroupTaskId);
+            if (listUserJoined != null && groupTask != null) {
+                foreach (var user in listUserJoined) {
+                    if (user.Email != _contextRequest.GetEmailCurrentUser())
+                    {
+                        Notification notification = new Notification()
+                        {
+                            CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                            NotificationId = null,
+                            GroupTaskRelateId = paramDeletGroupTask.GroupTaskId,
+                            NotifyForEmail = user.Email,
+                            TaskRelateId = null,
+                            TypeNoti = (int)EnumTypeNotification.DeleteGroupTask,
+                            RoleRelateId = user.Role.RoleId,
+                            CreatedTime = DateTime.Now,
+                            ReadStatus = false,
+                            NameGroupTask = groupTask.NameGroupTask
+                        };
+                        listNotification.Add(notification);
+                    }
+                }
+            }
+
+            var result = _iDLGroupTask.DeleteCustom(paramDeletGroupTask);
+
+            if (result > 0) {
+                foreach (var taskId in listTaskId)
+                {
+                    _iBLTask.DeleteCustom(taskId, false);
+                }
+
+                foreach (var notification in listNotification)
+                { 
+                    System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+                }
+            }
             return result;
         }
     }

@@ -96,5 +96,20 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPut("deleteCustom/")]
+        public IActionResult DeleteCustom([FromBody] ParamDeletGroupTask paramDeletGroupTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.DeleteCustom(paramDeletGroupTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

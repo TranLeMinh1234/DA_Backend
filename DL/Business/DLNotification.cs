@@ -59,5 +59,21 @@ namespace DL.Business
             
             return result;
         }
+
+        public int TickReadNotification(string notificationIds) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("NotificationIds", notificationIds);
+            var result = _dbConnection.Execute("Proc_TickReadNotification", param, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        public int GetNumberOfNewNotification(string email)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("Email", email);
+            string sql = "SELECT COUNT(*) FROM Notification WHERE NotifyForEmail = @Email AND ReadStatus = false";
+            var result = _dbConnection.Query<int>(sql, param, commandType: System.Data.CommandType.Text).FirstOrDefault();
+            return result;
+        }
     }
 }
