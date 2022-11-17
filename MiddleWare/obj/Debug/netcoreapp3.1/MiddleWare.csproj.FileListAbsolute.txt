@@ -15,3 +15,5 @@ E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netc
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.csproj.CopyComplete
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.dll
 E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\obj\Debug\netcoreapp3.1\MiddleWare.pdb
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Utilities.dll
+E:\New folder (2)\all_project\C#\DA_Backend\DA_Backend\MiddleWare\bin\Debug\netcoreapp3.1\Utilities.pdb

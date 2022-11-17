@@ -18,6 +18,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using MiddleWare;
+using Quartz;
 using Service;
 using Service.Interface;
 using System;
@@ -77,6 +78,9 @@ namespace DA_Backend
             services.AddScoped<IBLGroupTask, BLGroupTask>();
             services.AddScoped<IBLNotification, BLNotification>();
 
+            //scoped servies
+            services.AddSingleton<RemindTaskJob>();
+
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
@@ -109,6 +113,7 @@ namespace DA_Backend
             services.UseContextRequestService();
             services.UseWebSocketConnectionManagerService();
             services.UseRemindTaskService();
+            services.UseRemindTaskJob();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

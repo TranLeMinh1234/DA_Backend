@@ -111,5 +111,35 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPost("addMembers")]
+        public IActionResult AddMemebers([FromBody] ParamAddMember paramAddMember)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.AddMemebers(paramAddMember);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpDelete("members/{email}/{groupTaskId}/{nameGroupTask}")]
+        public IActionResult DeleteMember(string email, Guid groupTaskId, string nameGroupTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.DeleteMember(email,groupTaskId,nameGroupTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

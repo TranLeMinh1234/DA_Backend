@@ -12,7 +12,6 @@ namespace ClassModel.ParamApi
         public double TimeBeforeStartTime { get; set; }
         public Guid TaskId { get; set; }
         public List<string> EmailWillSend { get; set; }
-
         public Boolean IsRemindEndTime { get; set; }
         public Boolean IsRemindStartTime { get; set; }
     }

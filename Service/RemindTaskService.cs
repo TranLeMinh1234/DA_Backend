@@ -2,6 +2,7 @@
 using ClassModel.TaskRelate;
 using ClassModel.User;
 using Dapper;
+using Microsoft.Extensions.DependencyInjection;
 using Org.BouncyCastle.Asn1.BC;
 using Quartz;
 using Quartz.Impl;
@@ -11,8 +12,10 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Utilities;
 using static ClassModel.Enumeration;
 using static Service.RemindTaskService;
 
@@ -36,6 +39,7 @@ namespace Service
 
         protected readonly IMailService _mailService;
 
+
         public RemindTaskService()
         {
             /*schedulerFactory = new StdSchedulerFactory(configuration);
@@ -43,10 +47,12 @@ namespace Service
             scheduler.Start();*/
         }
 
-        public async System.Threading.Tasks.Task InitAsync()
+        public async System.Threading.Tasks.Task InitAsync(IServiceProvider serviceProvider)
         {
             schedulerFactory = new StdSchedulerFactory(configuration);
             scheduler = await schedulerFactory.GetScheduler();
+            scheduler.JobFactory = new InjectJobFactory(serviceProvider);
+            
             await scheduler.Start();
         }
 
@@ -116,6 +122,70 @@ namespace Service
                 
                 return result;
             }
+
+            public ClassModel.TaskRelate.Task GetFullInfo(Guid taskId)
+            {
+                Dictionary<string, object> param = new Dictionary<string, object>();
+                param.Add("TaskIdParam", taskId);
+                var result = _dbConnection.Query<ClassModel.TaskRelate.Task, User, User, User, ClassModel.TaskRelate.Task>("Proc_GetFullInfoTask",
+                    map: (task, userAssign, userDoTask, userCreate) =>
+                    {
+                        task.AssignedBy = userAssign;
+                        task.AssignedFor = userDoTask;
+                        task.CreatedBy = userCreate;
+
+                        return task;
+                    },
+                    param,
+                    splitOn: "Email,Email,Email",
+                    commandType: System.Data.CommandType.StoredProcedure).FirstOrDefault();
+                return result;
+            }
+
+            public Guid? Insert<T>(T newRecord)
+            {
+                Type typeRecord = newRecord.GetType();
+                string tableName = newRecord.GetType().Name;
+                PropertyInfo primaryKeyProperty = ClassUtility.GetPrimaryKeyPropertyOfClass(typeRecord);
+                List<string> namePropertiesInsertDb = ClassUtility.GetNamePropertiesInsertDb(typeRecord);
+                Dictionary<string, object> paramInsert = ClassUtility.GetPropertiesInsertDb(typeRecord, newRecord);
+                object newID = null;
+                paramInsert.TryGetValue(primaryKeyProperty.Name, out newID);
+
+                string stringColumnInsert = "";
+                string stringParamInsert = "";
+                foreach (string nameColumn in namePropertiesInsertDb)
+                {
+                    stringColumnInsert += nameColumn + ", ";
+                    stringParamInsert += $"@{nameColumn}, ";
+                }
+
+                stringColumnInsert = stringColumnInsert.Remove(stringColumnInsert.Length - 2);
+                stringParamInsert = stringParamInsert.Remove(stringParamInsert.Length - 2);
+
+                string sql = $"INSERT INTO {tableName} ({stringColumnInsert}) VALUES ({stringParamInsert});";
+
+                int result = _dbConnection.Execute(sql, paramInsert, commandType: CommandType.Text);
+                if (result != 0)
+                {
+                    return (Guid)newID;
+                }
+                else
+                    return null;
+            }
+
+            public T GetById<T>(Guid recordId)
+            {
+                Type type = typeof(T);
+                string tableName = type.Name;
+                PropertyInfo propertyPrimaryKey = ClassUtility.GetPrimaryKeyPropertyOfClass(type);
+                Dictionary<string, object> param = new Dictionary<string, object>();
+                param.Add(propertyPrimaryKey.Name, recordId);
+                string sqlQuery = $"SELECT * FROM {tableName} WHERE {propertyPrimaryKey.Name} = @{propertyPrimaryKey.Name}";
+
+                return _dbConnection.Query<T>(sqlQuery, param, commandType: CommandType.Text).FirstOrDefault();
+            }
+
 
             ~DLService()
             {

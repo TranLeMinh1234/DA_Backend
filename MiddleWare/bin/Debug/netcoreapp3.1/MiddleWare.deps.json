@@ -869,10 +869,16 @@
           "NETCore.MailKit": "2.1.0",
           "Newtonsoft.Json": "13.0.1",
           "Quartz": "3.5.0",
-          "Quartz.Serialization.Json": "3.5.0"
+          "Quartz.Serialization.Json": "3.5.0",
+          "Utilities": "1.0.0"
         },
         "runtime": {
           "Service.dll": {}
+        }
+      },
+      "Utilities/1.0.0": {
+        "runtime": {
+          "Utilities.dll": {}
         }
       }
     }
@@ -1391,6 +1397,11 @@
       "sha512": ""
     },
     "Service/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Utilities/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

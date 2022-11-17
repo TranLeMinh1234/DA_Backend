@@ -1230,13 +1230,24 @@
           "NETCore.MailKit": "2.1.0",
           "Newtonsoft.Json": "13.0.1",
           "Quartz": "3.5.0",
-          "Quartz.Serialization.Json": "3.5.0"
+          "Quartz.Serialization.Json": "3.5.0",
+          "Utilities": "1.0.0"
         },
         "compile": {
           "bin/placeholder/Service.dll": {}
         },
         "runtime": {
           "bin/placeholder/Service.dll": {}
+        }
+      },
+      "Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/Utilities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Utilities.dll": {}
         }
       }
     }
@@ -3605,6 +3616,11 @@
       "type": "project",
       "path": "../Service/Service.csproj",
       "msbuildProject": "../Service/Service.csproj"
+    },
+    "Utilities/1.0.0": {
+      "type": "project",
+      "path": "../Utilities/Utilities.csproj",
+      "msbuildProject": "../Utilities/Utilities.csproj"
     }
   },
   "projectFileDependencyGroups": {

@@ -20,7 +20,7 @@ namespace DA_Backend
         {
             var webHost = CreateHostBuilder(args).Build();
 
-            await webHost.Services.GetService<RemindTaskService>().InitAsync();
+            await webHost.Services.GetService<RemindTaskService>().InitAsync(webHost.Services);
 
             webHost.Run();
         }

@@ -19,19 +19,19 @@ namespace DL.Business
             for (int i = 1; i <= joinedGroupTasks.Count; i++)
             {
                 sqlValuesInsert.Append($"(@JoinId{i}, @UserJoinedEmail{i}, @InvitedByEmail{i}, @RoleReferenceId{i}, @GroupTaskReferenceId{i}, @JoinedTime{i}),");
-                param.Add($"JoinId{i}",Guid.NewGuid());
-                param.Add($"UserJoinedEmail{i}", joinedGroupTasks.ElementAt(i-1).UserJoinedEmail);
+                param.Add($"JoinId{i}", Guid.NewGuid());
+                param.Add($"UserJoinedEmail{i}", joinedGroupTasks.ElementAt(i - 1).UserJoinedEmail);
                 param.Add($"InvitedByEmail{i}", joinedGroupTasks.ElementAt(i - 1).InvitedByEmail);
                 param.Add($"RoleReferenceId{i}", joinedGroupTasks.ElementAt(i - 1).RoleReferenceId);
                 param.Add($"GroupTaskReferenceId{i}", joinedGroupTasks.ElementAt(i - 1).GroupTaskReferenceId);
                 param.Add($"JoinedTime{i}", joinedGroupTasks.ElementAt(i - 1).JoinedTime);
             }
 
-            sqlValuesInsert = sqlValuesInsert.Remove(sqlValuesInsert.Length-1,1);
+            sqlValuesInsert = sqlValuesInsert.Remove(sqlValuesInsert.Length - 1, 1);
 
             string sql = $"INSERT INTO JoinedGroupTask (JoinId,UserJoinedEmail,InvitedByEmail,RoleReferenceId,GroupTaskReferenceId,JoinedTime) VALUES {sqlValuesInsert.ToString()};";
 
-            var result = _dbConnection.Execute(sql,param,commandType: System.Data.CommandType.Text);
+            var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
             return result;
         }
 
@@ -61,8 +61,8 @@ namespace DL.Business
                     user.Role = role;
                     return user;
                 }
-                ,param,
-                splitOn: "RoleId",commandType: System.Data.CommandType.StoredProcedure);
+                , param,
+                splitOn: "RoleId", commandType: System.Data.CommandType.StoredProcedure);
             return (List<User>)result;
         }
 
@@ -73,7 +73,7 @@ namespace DL.Business
             param.Add("TemplateReferenceQueryId", templateReferenceId);
 
 
-            var result = _dbConnection.Query<TemplateGroupTask, Process, ColumnSetting, TemplateGroupTask>("Proc_GetInfoTemplate", 
+            var result = _dbConnection.Query<TemplateGroupTask, Process, ColumnSetting, TemplateGroupTask>("Proc_GetInfoTemplate",
                 (templateGroupTask, process, columnSetting) => {
 
                     process.ColumnSetting = columnSetting;
@@ -168,7 +168,17 @@ namespace DL.Business
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("GroupTaskQueryId", paramDeletGroupTask.GroupTaskId);
 
-            var result = _dbConnection.Execute("Proc_DeleteGroupTask", param,commandType: System.Data.CommandType.StoredProcedure);
+            var result = _dbConnection.Execute("Proc_DeleteGroupTask", param, commandType: System.Data.CommandType.StoredProcedure);
+            return result;
+        }
+
+        public int DeleteMember(string email, Guid groupTaskId, string nameGroupTask) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("Email", email);
+            param.Add("GroupTaskId", groupTaskId);
+
+            string sql = "DELETE FROM JoinedGroupTask WHERE UserJoinedEmail = @Email AND GroupTaskReferenceId = @GroupTaskId;";
+            var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
             return result;
         }
     }

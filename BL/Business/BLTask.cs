@@ -211,46 +211,52 @@ namespace BL.Business
 
         public async System.Threading.Tasks.Task<ServiceResult> RemindTask(ParamRemindTask paramRemindTask) {
             ServiceResult serviceResult = new ServiceResult();
+            DateTime? endTime = paramRemindTask.IsRemindEndTime ? (DateTime?)paramRemindTask.EndTime : null,
+                    startTime = paramRemindTask.IsRemindStartTime ? (DateTime?)paramRemindTask.StartTime: null;
 
-            if (paramRemindTask.IsRemindEndTime)
+
+            if (endTime != null)
             {
-                DateTime endTime = (DateTime)paramRemindTask.EndTime;
-                endTime = endTime.AddSeconds(paramRemindTask.TimeBeforeEndTime*-1);
-                if (endTime.Ticks < DateTime.Now.Ticks)
+                endTime = ((DateTime)endTime).AddSeconds(paramRemindTask.TimeBeforeEndTime * -1);
+                if (((DateTime)endTime).Ticks < DateTime.Now.Ticks)
                 {
                     serviceResult.Success = false;
                     serviceResult.ErrorCode.Add("InvalidTimeBeforeEndTime");
                 }
-                else
+            }
+
+            if (startTime != null)
+            {
+                startTime = ((DateTime)startTime).AddSeconds(paramRemindTask.TimeBeforeStartTime * -1);
+                if (((DateTime)startTime).Ticks < DateTime.Now.Ticks)
                 {
+                    serviceResult.Success = false;
+                    serviceResult.ErrorCode.Add("InvalidTimeBeforeStartTime");
+                }
+            }
+
+            if (serviceResult.Success)
+            {
+                if (endTime != null) {
                     foreach (var email in paramRemindTask.EmailWillSend)
                     {
-                        RemindDataStore remindDataStore = new RemindDataStore() {
+                        RemindDataStore remindDataStore = new RemindDataStore()
+                        {
                             RemindDataId = Guid.NewGuid(),
                             TaskId = paramRemindTask.TaskId,
                             IsUsed = false,
-                            EmailRemindedUser = "tlminh10300@gmail.com",
+                            EmailRemindedUser = email,
                             TypeRemind = (int)EnumTypeRemind.EndTime
                         };
                         int numberOfInsertedRecord = _iDLTask.InsertRemindDataStore(remindDataStore);
                         if (numberOfInsertedRecord > 0)
                         {
-                            await _iRemindTaskService.AddRemindTaskJob((Guid)remindDataStore.RemindDataId, endTime);
+                            await _iRemindTaskService.AddRemindTaskJob((Guid)remindDataStore.RemindDataId, (DateTime)endTime);
                         }
                     }
                 }
-            }
 
-            if (paramRemindTask.IsRemindStartTime)
-            {
-                DateTime startTime = (DateTime)paramRemindTask.StartTime;
-                startTime = startTime.AddSeconds(paramRemindTask.TimeBeforeStartTime * -1);
-                if (startTime.Ticks < DateTime.Now.Ticks)
-                {
-                    serviceResult.Success = false;
-                    serviceResult.ErrorCode.Add("InvalidTimeBeforeStartTime");
-                }
-                else
+                if(startTime != null)
                 {
                     foreach (var email in paramRemindTask.EmailWillSend)
                     {
@@ -259,18 +265,21 @@ namespace BL.Business
                             RemindDataId = Guid.NewGuid(),
                             TaskId = paramRemindTask.TaskId,
                             IsUsed = false,
-                            EmailRemindedUser = "tlminh10300@gmail.com",
+                            EmailRemindedUser = email,
                             TypeRemind = (int)EnumTypeRemind.StartTime
                         };
                         int numberOfInsertedRecord = _iDLTask.InsertRemindDataStore(remindDataStore);
                         if (numberOfInsertedRecord > 0)
                         {
-                            await _iRemindTaskService.AddRemindTaskJob((Guid)remindDataStore.RemindDataId, startTime);
+                            await _iRemindTaskService.AddRemindTaskJob((Guid)remindDataStore.RemindDataId, (DateTime)startTime);
                         }
                     }
                 }
             }
-
+            else
+            {
+                return serviceResult;
+            }
 
             return serviceResult;
         }

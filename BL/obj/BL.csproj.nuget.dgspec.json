@@ -312,6 +312,9 @@
             "projectReferences": {
               "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj": {
                 "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj"
+              },
+              "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Utilities\\Utilities.csproj": {
+                "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Utilities\\Utilities.csproj"
               }
             }
           }

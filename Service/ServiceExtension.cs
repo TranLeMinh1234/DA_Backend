@@ -22,5 +22,10 @@ namespace Service
         {
             return services.AddSingleton<RemindTaskService>();
         }
+
+        public static IServiceCollection UseRemindTaskJob(this IServiceCollection services)
+        {
+            return services.AddSingleton<RemindTaskJob>();
+        }
     }
 }

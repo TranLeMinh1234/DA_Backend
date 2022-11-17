@@ -1197,6 +1197,16 @@
         "runtime": {
           "bin/placeholder/ClassModel.dll": {}
         }
+      },
+      "Utilities/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/Utilities.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Utilities.dll": {}
+        }
       }
     }
   },
@@ -3546,6 +3556,11 @@
       "type": "project",
       "path": "../ClassModel/ClassModel.csproj",
       "msbuildProject": "../ClassModel/ClassModel.csproj"
+    },
+    "Utilities/1.0.0": {
+      "type": "project",
+      "path": "../Utilities/Utilities.csproj",
+      "msbuildProject": "../Utilities/Utilities.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -3561,7 +3576,8 @@
       "NETCore.MailKit >= 2.1.0",
       "Newtonsoft.Json >= 13.0.1",
       "Quartz >= 3.5.0",
-      "Quartz.Serialization.Json >= 3.5.0"
+      "Quartz.Serialization.Json >= 3.5.0",
+      "Utilities >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -3593,6 +3609,9 @@
           "projectReferences": {
             "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj": {
               "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj"
+            },
+            "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Utilities\\Utilities.csproj": {
+              "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Utilities\\Utilities.csproj"
             }
           }
         }

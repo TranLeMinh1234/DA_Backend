@@ -270,6 +270,10 @@
             "Newtonsoft.Json": {
               "target": "Package",
               "version": "[13.0.1, )"
+            },
+            "Quartz.AspNetCore": {
+              "target": "Package",
+              "version": "[3.5.0, )"
             }
           },
           "imports": [
@@ -469,6 +473,9 @@
             "projectReferences": {
               "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj": {
                 "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\ClassModel\\ClassModel.csproj"
+              },
+              "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Utilities\\Utilities.csproj": {
+                "projectPath": "E:\\New folder (2)\\all_project\\C#\\DA_Backend\\DA_Backend\\Utilities\\Utilities.csproj"
               }
             }
           }

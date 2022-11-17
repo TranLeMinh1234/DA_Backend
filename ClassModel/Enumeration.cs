@@ -46,7 +46,9 @@ namespace ClassModel
             CommentedTask = 5,
             RemindTask = 6,
             DeleteGroupTask = 7,
-            ReloadGroupTask = 8
+            ReloadGroupTask = 8,
+            RemindEndTimeTask = 9,
+            RemindStartTimeTask = 10
         }
     }
 }

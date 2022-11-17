@@ -150,5 +150,79 @@ namespace BL.Business
             }
             return result;
         }
+
+        public int AddMemebers(ParamAddMember paramAddMember) {
+            List<ClassModel.User.User> listUser = paramAddMember.ListUser;
+            List<JoinedGroupTask> listJoinedGroupTask = new List<JoinedGroupTask>();
+            List<Notification> listNotification = new List<Notification>();
+            foreach (var member in listUser)
+            {
+                JoinedGroupTask joinedGroupTask = new JoinedGroupTask()
+                {
+                    JoinId = null,
+                    JoinedTime = DateTime.Now,
+                    InvitedByEmail = _contextRequest.GetEmailCurrentUser(),
+                    GroupTaskReferenceId = paramAddMember.GroupTaskId,
+                    UserJoinedEmail = member.Email,
+                    RoleReferenceId = member.Role.RoleId
+                };
+
+                if (member.Email != _contextRequest.GetEmailCurrentUser())
+                {
+                    Notification notification = new Notification()
+                    {
+                        CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                        NotificationId = null,
+                        GroupTaskRelateId = paramAddMember.GroupTaskId,
+                        NotifyForEmail = member.Email,
+                        TaskRelateId = null,
+                        TypeNoti = (int)EnumTypeNotification.AddUserGroupTask,
+                        RoleRelateId = member.Role.RoleId,
+                        CreatedTime = DateTime.Now,
+                        ReadStatus = false
+                    };
+                    listNotification.Add(notification);
+                }
+
+                listJoinedGroupTask.Add(joinedGroupTask);
+            }
+
+            var result = _iDLGroupTask.InsertBatchJoinedGroupTask(listJoinedGroupTask);
+            if (listNotification.Count > 0)
+            {
+                _iBlNotification.InsertBatch(listNotification);
+                foreach (var notification in listNotification)
+                {
+                    System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+                }
+            }
+
+            return result;
+        }
+
+        public int DeleteMember(string email, Guid groupTaskId, string nameGroupTask) {
+            var result = _iDLGroupTask.DeleteMember(email,groupTaskId,nameGroupTask);
+            if (result > 0)
+            {
+                Notification notification = new Notification()
+                {
+                    CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                    NotificationId = null,
+                    GroupTaskRelateId = groupTaskId,
+                    NotifyForEmail = email,
+                    TaskRelateId = null,
+                    TypeNoti = (int)EnumTypeNotification.DeleteUserFromGroupTask,
+                    RoleRelateId = null,
+                    CreatedTime = DateTime.Now,
+                    ReadStatus = false,
+                    NameGroupTask = nameGroupTask
+                };
+
+                _iBlNotification.Insert(notification);
+                System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+            }
+
+            return result;
+        }
     }
 }
