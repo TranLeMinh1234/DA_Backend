@@ -141,5 +141,20 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPut("updaterolemember")]
+        public IActionResult UpdateRoleMember([FromBody]ParamUpdateRoleMember paramUpdateRoleMember)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.UpdateRoleMember(paramUpdateRoleMember.Email, paramUpdateRoleMember.GroupTaskId, paramUpdateRoleMember.RoleId, paramUpdateRoleMember.NameGroupTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }

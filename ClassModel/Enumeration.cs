@@ -48,7 +48,8 @@ namespace ClassModel
             DeleteGroupTask = 7,
             ReloadGroupTask = 8,
             RemindEndTimeTask = 9,
-            RemindStartTimeTask = 10
+            RemindStartTimeTask = 10,
+            ChangeRoleGroupTask = 11
         }
     }
 }

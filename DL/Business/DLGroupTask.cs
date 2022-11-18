@@ -181,5 +181,16 @@ namespace DL.Business
             var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
             return result;
         }
+
+        public int UpdateRoleMember(string email, Guid groupTaskId, Guid roleId) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("Email", email);
+            param.Add("GroupTaskId", groupTaskId);
+            param.Add("RoleId", roleId);
+
+            string sql = "UPDATE JoinedGroupTask SET RoleReferenceId = @RoleId WHERE UserJoinedEmail = @Email AND GroupTaskReferenceId = @GroupTaskId;";
+            var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            return result;
+        }
     }
 }

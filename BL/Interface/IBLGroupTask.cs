@@ -16,5 +16,6 @@ namespace BL.Interface
         public int DeleteCustom(ParamDeletGroupTask paramDeletGroupTask);
         public int AddMemebers(ParamAddMember paramAddMember);
         public int DeleteMember(string email, Guid groupTaskId, string nameGroupTask);
+        public int UpdateRoleMember(string email, Guid groupTaskId, Guid roleId, string nameGroupTask);
     }
 }

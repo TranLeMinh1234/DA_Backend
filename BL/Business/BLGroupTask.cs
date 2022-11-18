@@ -21,14 +21,16 @@ namespace BL.Business
         private IBLNotification _iBlNotification;
         private WebsocketConnectionManager _websocketConnectionManager;
         private IBLTask _iBLTask;
+        private IDLRole _iDLRole;
 
-        public BLGroupTask(IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
+        public BLGroupTask(IDLRole iDLRole, IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
         {
             _iDLGroupTask = iDLGroupTask;
             _contextRequest = contextRequest;
             _iBlNotification = iBLNotification;
             _websocketConnectionManager = websocketConnectionManager;
             _iBLTask = iBLTask;
+            _iDLRole = iDLRole;
         }
 
         public GroupTask InsertCustom(ParamInserGroupTask paramInserGroupTask) {
@@ -216,6 +218,35 @@ namespace BL.Business
                     CreatedTime = DateTime.Now,
                     ReadStatus = false,
                     NameGroupTask = nameGroupTask
+                };
+
+                _iBlNotification.Insert(notification);
+                System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+            }
+
+            return result;
+        }
+
+        public int UpdateRoleMember(string email, Guid groupTaskId, Guid roleId, string nameGroupTask)
+        { 
+            var result = _iDLGroupTask.UpdateRoleMember(email,groupTaskId,roleId);
+            if (result > 0)
+            {
+                Role newRoleOfIUser = _iDLRole.GetById<Role>(roleId);
+                Notification notification = new Notification()
+                {
+                    CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                    NotificationId = null,
+                    GroupTaskRelateId = groupTaskId,
+                    NotifyForEmail = email,
+                    TaskRelateId = null,
+                    TypeNoti = (int)EnumTypeNotification.ChangeRoleGroupTask,
+                    RoleRelateId = roleId,
+                    CreatedTime = DateTime.Now,
+                    ReadStatus = false,
+                    NameGroupTask = nameGroupTask,
+                    Role = newRoleOfIUser
+
                 };
 
                 _iBlNotification.Insert(notification);

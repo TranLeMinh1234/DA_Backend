@@ -16,5 +16,6 @@ namespace DL.Interface
         public List<Task> GetAllTask(ParamGetAllTask paramGetAllTask);
         public int DeleteCustom(ParamDeletGroupTask paramDeletGroupTask);
         public int DeleteMember(string email, Guid groupTaskId, string nameGroupTask);
+        public int UpdateRoleMember(string email, Guid groupTaskId, Guid roleId);
     }
 }
