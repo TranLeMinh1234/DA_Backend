@@ -37,6 +37,10 @@ namespace ClassModel.TaskRelate
         public string AssignForEmail { get; set; }
         [AddDatabase]
         public Guid? GroupTaskId { get; set; }
+        [AddDatabase]
+        public int Status { get; set; } = (int)EnumStatusTask.NeedExecute;
+        [AddDatabase]
+        public DateTime? FinishTime { get; set; }
 
         public List<FileAttachment> ListAttachment { get; set; }
         public List<string> ListCommment { get; set; }

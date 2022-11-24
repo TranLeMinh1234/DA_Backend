@@ -23,5 +23,6 @@ namespace ClassModel.TaskRelate
         public DateTime? CreatedTime { get; set; }
         public ClassModel.User.User CreatedBy { get; set; }
         public ClassModel.User.User EditBy { get; set; }
+        public string AttachToTaskByEmail { get; set; }
     }
 }

@@ -22,8 +22,9 @@ namespace BL.Business
         private WebsocketConnectionManager _websocketConnectionManager;
         private IBLTask _iBLTask;
         private IDLRole _iDLRole;
+        private IBLTemplateCustom _iBLTemplateCustom;
 
-        public BLGroupTask(IDLRole iDLRole, IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
+        public BLGroupTask(IBLTemplateCustom iBLTemplateCustom, IDLRole iDLRole, IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
         {
             _iDLGroupTask = iDLGroupTask;
             _contextRequest = contextRequest;
@@ -31,58 +32,73 @@ namespace BL.Business
             _websocketConnectionManager = websocketConnectionManager;
             _iBLTask = iBLTask;
             _iDLRole = iDLRole;
+            _iBLTemplateCustom = iBLTemplateCustom;
         }
 
         public GroupTask InsertCustom(ParamInserGroupTask paramInserGroupTask) {
             GroupTask groupTask = paramInserGroupTask.GroupTask;
             groupTask.CreatedByEmail = _contextRequest.GetEmailCurrentUser();
             groupTask.CreatedTime = DateTime.Now;
+            TemplateCustom templateCustom = null;
 
-            Guid?  newIdGroupTask = _iDLGroupTask.Insert(groupTask);
-            if (newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Group || newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Personal)
+            TemplateGroupTask templateGroupTask = GetInfoTemplateOrigin((Guid)paramInserGroupTask.GroupTask.TemplateReferenceId);
+            if (templateGroupTask != null)
             {
-                List<JoinedGroupTask> listJoinedGroupTask = new List<JoinedGroupTask>();
-                List<Notification> listNotification = new List<Notification>();
-                foreach (ClassModel.User.User userJoin in paramInserGroupTask.ListUser)
-                {
-                    JoinedGroupTask joinedGroupTask = new JoinedGroupTask() {
-                        JoinId = null,
-                        InvitedByEmail = _contextRequest.GetEmailCurrentUser(),
-                        UserJoinedEmail = userJoin.Email,
-                        JoinedTime = DateTime.Now,
-                        GroupTaskReferenceId = newIdGroupTask,
-                        RoleReferenceId = userJoin.Role.RoleId
-                    };
+                templateCustom = _iBLTemplateCustom.InsertCustom(templateGroupTask);
+            }
 
-                    if (userJoin.Email != _contextRequest.GetEmailCurrentUser())
+            if (templateCustom != null)
+            {
+                groupTask.TemplateReferenceId = templateCustom.TemplateCustomId;
+                Guid? newIdGroupTask = _iDLGroupTask.Insert(groupTask);
+
+                if (newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Group || newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Personal)
+                {
+                    List<JoinedGroupTask> listJoinedGroupTask = new List<JoinedGroupTask>();
+                    List<Notification> listNotification = new List<Notification>();
+                    foreach (ClassModel.User.User userJoin in paramInserGroupTask.ListUser)
                     {
-                        Notification notification = new Notification()
+                        JoinedGroupTask joinedGroupTask = new JoinedGroupTask()
                         {
-                            CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
-                            NotificationId = null,
-                            GroupTaskRelateId = newIdGroupTask,
-                            NotifyForEmail = userJoin.Email,
-                            TaskRelateId = null,
-                            TypeNoti = (int)EnumTypeNotification.AddUserGroupTask,
-                            RoleRelateId = userJoin.Role.RoleId,
-                            CreatedTime = DateTime.Now,
-                            ReadStatus = false
+                            JoinId = null,
+                            InvitedByEmail = _contextRequest.GetEmailCurrentUser(),
+                            UserJoinedEmail = userJoin.Email,
+                            JoinedTime = DateTime.Now,
+                            GroupTaskReferenceId = newIdGroupTask,
+                            RoleReferenceId = userJoin.Role.RoleId
                         };
-                        listNotification.Add(notification);
+
+                        if (userJoin.Email != _contextRequest.GetEmailCurrentUser())
+                        {
+                            Notification notification = new Notification()
+                            {
+                                CreatedByEmail = _contextRequest.GetEmailCurrentUser(),
+                                NotificationId = null,
+                                GroupTaskRelateId = newIdGroupTask,
+                                NotifyForEmail = userJoin.Email,
+                                TaskRelateId = null,
+                                TypeNoti = (int)EnumTypeNotification.AddUserGroupTask,
+                                RoleRelateId = userJoin.Role.RoleId,
+                                CreatedTime = DateTime.Now,
+                                ReadStatus = false,
+                                NameGroupTask = groupTask.NameGroupTask
+                            };
+                            listNotification.Add(notification);
+                        }
+
+                        listJoinedGroupTask.Add(joinedGroupTask);
                     }
 
-                    listJoinedGroupTask.Add(joinedGroupTask);
-                }
+                    _iDLGroupTask.InsertBatchJoinedGroupTask(listJoinedGroupTask);
+                    if (listNotification.Count > 0)
+                    {
+                        _iBlNotification.InsertBatch(listNotification);
+                    }
 
-                _iDLGroupTask.InsertBatchJoinedGroupTask(listJoinedGroupTask);
-                if (listNotification.Count > 0)
-                {
-                    _iBlNotification.InsertBatch(listNotification);
-                }
-
-                foreach (var notification in listNotification)
-                {
-                    System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+                    foreach (var notification in listNotification)
+                    {
+                        System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
+                    }
                 }
             }
 
@@ -99,8 +115,14 @@ namespace BL.Business
             return result;
         }
 
-        public TemplateGroupTask GetInfoTemplate(Guid groupTaskId, Guid templateReferenceId) {
+        public TemplateCustom GetInfoTemplate(Guid groupTaskId, Guid templateReferenceId) {
             var result = _iDLGroupTask.GetInfoTemplate(groupTaskId, templateReferenceId);
+            return result;
+        }
+
+        public TemplateGroupTask GetInfoTemplateOrigin(Guid templateReferenceId)
+        {
+            var result = _iDLGroupTask.GetInfoTemplateOrigin(templateReferenceId);
             return result;
         }
 

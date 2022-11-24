@@ -11,7 +11,6 @@ namespace ClassModel
     public class WebSocketCustom
     {
         public WebSocket WebSocketInheritance { get; set; }
-
         public async Task SendText(string text)
         {
             var buffer = Encoding.UTF8.GetBytes(text);

@@ -122,7 +122,7 @@ namespace DL
             string tableName = type.Name;
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("CreatedByEmail", email);
-            string sqlQuery = $"SELECT * FROM {tableName} WHERE CreatedByEmail = @CreatedByEmail OR CreatedByEmail IS Null";
+            string sqlQuery = $"SELECT * FROM {tableName} WHERE CreatedByEmail = @CreatedByEmail OR CreatedByEmail IS Null OR CreatedByEmail = 'admin';";
 
             return (List<T>)_dbConnection.Query<T>(sqlQuery, param, commandType: CommandType.Text);
         }

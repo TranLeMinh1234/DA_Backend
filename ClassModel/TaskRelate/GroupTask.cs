@@ -24,7 +24,7 @@ namespace ClassModel.TaskRelate
         public Guid? TemplateReferenceId { get; set; }
 
         public List<Role> ListRole { get; set; } = new List<Role>();
-        public TemplateGroupTask TemplateGroupTask { get; set; }
+        public TemplateCustom TemplateCustom { get; set; }
         public ClassModel.User.User CreatedBy { get; set; }
         public List<Task> ListTask { get; set; }
     }

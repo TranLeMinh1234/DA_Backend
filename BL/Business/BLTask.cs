@@ -57,7 +57,7 @@ namespace BL.Business
         }
 
         public int InsertLabelsTask(Guid taskId, List<string> listLabelId) {
-            var result = _iDLTask.InsertLabelsTask(taskId, listLabelId);
+            var result = _iDLTask.InsertLabelsTask(taskId, listLabelId, _contextRequest.GetEmailCurrentUser());
             return result;
         }
 
@@ -322,5 +322,16 @@ namespace BL.Business
             return result;
         }
 
+        public int CheckFinished(ParamCheckFinishedTask paramCheckFinishedTask) {
+            paramCheckFinishedTask.FinishTime = DateTime.Now;
+            var result = _iDLTask.CheckFinished(paramCheckFinishedTask);
+            return result;
+        }
+
+        public int ConfirmFinishedWork(Guid taskId, int status)
+        {
+            var result = _iDLTask.ConfirmFinishedWork(taskId, status);
+            return result;
+        }
     }
 }

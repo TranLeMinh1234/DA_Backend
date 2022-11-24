@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DA_Backend.Controllers
 {
@@ -292,6 +293,36 @@ namespace DA_Backend.Controllers
             try
             {
                 serviceResult.Data = _iBLTask.CheckExistsTask(taskId);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpPut("checkfinished")]
+        public IActionResult CheckFinished([FromBody] ParamCheckFinishedTask paramCheckFinishedTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.CheckFinished(paramCheckFinishedTask);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpPut("confirmfinishwork")]
+        public IActionResult ConfirmFinishedWork(List<string> param)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLTask.ConfirmFinishedWork(Guid.Parse(param.ElementAt(0)),Convert.ToInt32(param.ElementAt(1)));
             }
             catch (Exception ex)
             {

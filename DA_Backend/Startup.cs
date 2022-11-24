@@ -63,6 +63,7 @@ namespace DA_Backend
             services.AddScoped<IDLRole, DLRole>();
             services.AddScoped<IDLGroupTask, DLGroupTask>();
             services.AddScoped<IDLNotification, DLNotification>();
+            services.AddScoped<IDLTemplateCustom, DLTemplateCustom>();
 
             //BL
             services.AddScoped<IBLBase, BLBase>();
@@ -77,6 +78,7 @@ namespace DA_Backend
             services.AddScoped<IBLRole, BLRole>();
             services.AddScoped<IBLGroupTask, BLGroupTask>();
             services.AddScoped<IBLNotification, BLNotification>();
+            services.AddScoped<IBLTemplateCustom, BLTemplateCustom>();
 
             //scoped servies
             services.AddSingleton<RemindTaskJob>();

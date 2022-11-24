@@ -12,7 +12,7 @@ namespace DL.Interface
     {
         public Task GetLastTask(string Email, int typeTask, Guid? groupTaskId = null, Guid? processId = null);
         public List<Task> GetChildTask(Guid taskId);
-        public int InsertLabelsTask(Guid taskId, List<string> listLabelId);
+        public int InsertLabelsTask(Guid taskId, List<string> listLabelId, string email);
         public List<Label> GetLabelsTask(Guid taskId);
         public int DeleteLabelsTask(Guid taskId, Guid labelId);
         public void GetCommentsTask(Guid taskId, out List<Comment> comments, out List<FileAttachment> fileAttachments, out List<User> users);
@@ -26,5 +26,7 @@ namespace DL.Interface
         public int UpdateAssignForUser(Guid taskId, string assignForEmail, string assignedByEmail);
         public bool CheckExistsTask(Guid taskId);
         public List<string> GetEmailUserJoined(Guid groupTaskId);
+        public int CheckFinished(ParamCheckFinishedTask paramCheckFinishedTask);
+        public int ConfirmFinishedWork(Guid taskId, int status);
     }
 }

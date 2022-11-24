@@ -52,14 +52,15 @@ namespace DL.Business
             return result;
         }
 
-        public int InsertLabelsTask(Guid taskId, List<string> listLabelId)
+        public int InsertLabelsTask(Guid taskId, List<string> listLabelId, string email)
         {
             StringBuilder sql = new StringBuilder();
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", taskId);
+            param.Add("CreatedByEmail", email);
             for (int i = 0; i < listLabelId.Count; i++)
             {
-                sql.Append($"INSERT INTO TaskLabel (TaskId, LabelId) values (@TaskId,@LabelId{i});");
+                sql.Append($"INSERT INTO TaskLabel (TaskId, LabelId, CreatedByEmail) values (@TaskId,@LabelId{i},@CreatedByEmail);");
                 param.Add($"LabelId{i}", listLabelId.ElementAt(i));
             }
             var result = _dbConnection.Execute(sql.ToString(), param, commandType: System.Data.CommandType.Text);
@@ -68,7 +69,7 @@ namespace DL.Business
 
         public List<Label> GetLabelsTask(Guid taskId)
         {
-            string sql = $"SELECT * FROM Label ll INNER JOIN TaskLabel tl ON tl.LabelId = ll.LabelId AND tl.TaskId = @TaskId";
+            string sql = $"SELECT ll.*, tl.CreatedByEmail as AttachToTaskByEmail FROM Label ll INNER JOIN TaskLabel tl ON tl.LabelId = ll.LabelId AND tl.TaskId = @TaskId";
             Dictionary<string, object> param = new Dictionary<string, object>();
             param.Add("TaskId", taskId);
             var result = (List<Label>)_dbConnection.Query<Label>(sql, param, commandType: System.Data.CommandType.Text);
@@ -236,6 +237,39 @@ namespace DL.Business
 
             string sql = "SELECT UserJoinedEmail FROM JoinedGroupTask WHERE GroupTaskReferenceId = @GroupTaskQueryId;";
             var result = _dbConnection.Query<string>(sql, param, commandType: System.Data.CommandType.Text).AsList();
+            return result;
+        }
+
+        public int CheckFinished(ParamCheckFinishedTask paramCheckFinishedTask) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("TaskId", paramCheckFinishedTask.TaskId);
+            param.Add("FinishTime", paramCheckFinishedTask.FinishTime);
+            param.Add("Status", EnumStatusTask.CheckFinished);
+
+            string sql = "UPDATE Task SET Status = @Status, FinishTime = @FinishTime WHERE TaskId = @TaskId;";
+            var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            return result;
+        }
+
+        public int ConfirmFinishedWork(Guid taskId, int status) {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            var result = 0;
+            if (status == (int)EnumStatusTask.NeedExecute)
+            {
+                param.Add("TaskId", taskId);
+                param.Add("FinishTime", null);
+                param.Add("Status", EnumStatusTask.NeedExecute);
+                string sql = "UPDATE Task SET Status = @Status, FinishTime = @FinishTime WHERE TaskId = @TaskId;";
+                result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            }
+            else if (status == (int)EnumStatusTask.ConfirmedFinished)
+            {
+                param.Add("TaskId", taskId);
+                param.Add("Status", EnumStatusTask.ConfirmedFinished);
+                string sql = "UPDATE Task SET Status = @Status WHERE TaskId = @TaskId;";
+                result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
+            }
+
             return result;
         }
     }

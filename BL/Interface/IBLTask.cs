@@ -42,5 +42,9 @@ namespace BL.Interface
         public bool CheckExistsTask(Guid taskId);
 
         public List<string> GetEmailUserJoined(Guid groupTaskId);
+
+        public int CheckFinished(ParamCheckFinishedTask paramCheckFinishedTask);
+
+        public int ConfirmFinishedWork(Guid taskId, int status);
     }
 }

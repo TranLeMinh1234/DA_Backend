@@ -66,17 +66,17 @@ namespace DL.Business
             return (List<User>)result;
         }
 
-        public TemplateGroupTask GetInfoTemplate(Guid groupTaskId, Guid templateReferenceId) {
+        public TemplateGroupTask GetInfoTemplateOrigin(Guid templateReferenceId) {
             Dictionary<string, TemplateGroupTask> resultMapping = new Dictionary<string, TemplateGroupTask>();
             Dictionary<string, object> param = new Dictionary<string, object>();
-            param.Add("GroupTaskQueryId", groupTaskId);
             param.Add("TemplateReferenceQueryId", templateReferenceId);
 
 
-            var result = _dbConnection.Query<TemplateGroupTask, Process, ColumnSetting, TemplateGroupTask>("Proc_GetInfoTemplate",
+            var result = _dbConnection.Query<TemplateGroupTask, Process, ColumnSetting, TemplateGroupTask>("Proc_GetInfoTemplateOrigin",
                 (templateGroupTask, process, columnSetting) => {
 
                     process.ColumnSetting = columnSetting;
+                    process.ColumnSettingReferenceId = columnSetting.ColumnSettingId;
 
                     if (resultMapping.ContainsKey(templateGroupTask.TemplateGroupTaskId.ToString()))
                     {
@@ -92,6 +92,39 @@ namespace DL.Business
                     }
 
                     return templateGroupTask;
+                },
+                param,
+                splitOn: "ProcessId,ColumnSettingId", commandType: System.Data.CommandType.StoredProcedure);
+
+            return resultMapping.Values.AsList().ElementAt(0);
+        }
+
+        public TemplateCustom GetInfoTemplate(Guid groupTaskId, Guid templateReferenceId) {
+            Dictionary<string, TemplateCustom> resultMapping = new Dictionary<string, TemplateCustom>();
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("GroupTaskQueryId", groupTaskId);
+            param.Add("TemplateReferenceQueryId", templateReferenceId);
+
+
+            var result = _dbConnection.Query<TemplateCustom, Process, ColumnSetting, TemplateCustom>("Proc_GetInfoTemplate",
+                (templateCustom, process, columnSetting) => {
+
+                    process.ColumnSetting = columnSetting;
+
+                    if (resultMapping.ContainsKey(templateCustom.TemplateCustomId.ToString()))
+                    {
+                        if (resultMapping.TryGetValue(templateCustom.TemplateCustomId.ToString(), out templateCustom))
+                        {
+                            templateCustom.ListProcess.Add(process);
+                        }
+                    }
+                    else
+                    {
+                        templateCustom.ListProcess.Add(process);
+                        resultMapping.Add(templateCustom.TemplateCustomId.ToString(), templateCustom);
+                    }
+
+                    return templateCustom;
                 },
                 param,
                 splitOn: "ProcessId,ColumnSettingId", commandType: System.Data.CommandType.StoredProcedure);

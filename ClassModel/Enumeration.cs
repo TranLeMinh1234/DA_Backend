@@ -51,5 +51,11 @@ namespace ClassModel
             RemindStartTimeTask = 10,
             ChangeRoleGroupTask = 11
         }
+
+        public enum EnumStatusTask { 
+            NeedExecute = 1,
+            CheckFinished = 2,
+            ConfirmedFinished = 3
+        }
     }
 }
