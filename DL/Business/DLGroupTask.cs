@@ -225,5 +225,64 @@ namespace DL.Business
             var result = _dbConnection.Execute(sql, param, commandType: System.Data.CommandType.Text);
             return result;
         }
+
+        public List<int> GetGeneralCount(Guid groupTaskId)
+        { 
+            var resultMultiple = _dbConnection.QueryMultiple("Proc_GetGeneralCount",new {
+                GroupTaskQueryId = groupTaskId
+            }, commandType: System.Data.CommandType.StoredProcedure);
+
+            List<int> listResult = new List<int>();
+            var sumOfTask = resultMultiple.Read<int>().FirstOrDefault();
+            var countComplete = resultMultiple.Read<int>().FirstOrDefault();
+            var countNotComplete = resultMultiple.Read<int>().FirstOrDefault();
+
+            listResult.Add(sumOfTask);
+            listResult.Add(countComplete);
+            listResult.Add(countNotComplete);
+
+            return listResult;
+        }
+
+        public List<object> TaskEachMember(Guid groupTaskId) {
+            List<object> listResult = new List<object>();
+            var resultMultiple = _dbConnection.QueryMultiple("Proc_GetTaskEachMember", new
+            {
+                GroupTaskQueryId = groupTaskId
+            }, commandType: System.Data.CommandType.StoredProcedure);
+
+            var listTotal = resultMultiple.Read<dynamic>().AsList();
+            var listComplete = resultMultiple.Read<dynamic>().AsList();
+            var listNotComplete = resultMultiple.Read<dynamic>().AsList();
+
+            listTotal.Sort((before, after) => {
+                if (before.TotalTask > after.TotalTask)
+                {
+                    return -1;
+                }
+                else if (before.TotalTask < after.TotalTask)
+                {
+                    return 1;
+                }
+                else
+                    return 0;   
+            });
+
+            foreach (var total in listTotal)
+            { 
+                var totalComplete = listComplete.Find(x => x.Email == total.Email)?.TotalCompleteTask;
+                var totalNotComplete = listNotComplete.Find(x => x.Email == total.Email)?.TotalNotCompleteTask;
+
+                listResult.Add(new { 
+                    Email = total.Email,
+                    UserName = total.UserName,
+                    Total = total.TotalTask,
+                    TotalComplete = totalComplete,
+                    TotalNotComplete = totalNotComplete
+                });
+            }
+
+            return listResult;
+        }
     }
 }

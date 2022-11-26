@@ -18,5 +18,7 @@ namespace BL.Interface
         public int DeleteMember(string email, Guid groupTaskId, string nameGroupTask);
         public int UpdateRoleMember(string email, Guid groupTaskId, Guid roleId, string nameGroupTask);
         public TemplateGroupTask GetInfoTemplateOrigin(Guid templateReferenceId);
+        public List<int> GetGeneralCount(Guid groupTaskId);
+        public List<object> TaskEachMember(Guid groupTaskId);
     }
 }

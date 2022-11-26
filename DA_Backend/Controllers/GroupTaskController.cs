@@ -36,7 +36,7 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
-        
+
         [HttpGet("havejoined")]
         public IActionResult GetGroupTaskHaveJoined()
         {
@@ -83,7 +83,7 @@ namespace DA_Backend.Controllers
         }
 
         [HttpPost("alltask")]
-        public IActionResult GetAllTask([FromBody] ParamGetAllTask paramGetAllTask )
+        public IActionResult GetAllTask([FromBody] ParamGetAllTask paramGetAllTask)
         {
             ServiceResult serviceResult = new ServiceResult();
             try
@@ -133,7 +133,7 @@ namespace DA_Backend.Controllers
             ServiceResult serviceResult = new ServiceResult();
             try
             {
-                serviceResult.Data = _iBLGroupTask.DeleteMember(email,groupTaskId,nameGroupTask);
+                serviceResult.Data = _iBLGroupTask.DeleteMember(email, groupTaskId, nameGroupTask);
             }
             catch (Exception ex)
             {
@@ -143,12 +143,42 @@ namespace DA_Backend.Controllers
         }
 
         [HttpPut("updaterolemember")]
-        public IActionResult UpdateRoleMember([FromBody]ParamUpdateRoleMember paramUpdateRoleMember)
+        public IActionResult UpdateRoleMember([FromBody] ParamUpdateRoleMember paramUpdateRoleMember)
         {
             ServiceResult serviceResult = new ServiceResult();
             try
             {
                 serviceResult.Data = _iBLGroupTask.UpdateRoleMember(paramUpdateRoleMember.Email, paramUpdateRoleMember.GroupTaskId, paramUpdateRoleMember.RoleId, paramUpdateRoleMember.NameGroupTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpGet("generalCount/{groupTaskId}")]
+        public IActionResult GetGeneralCount(Guid groupTaskId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.GetGeneralCount(groupTaskId);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpGet("taskeachmember/{groupTaskId}")]
+        public IActionResult TaskEachMember(Guid groupTaskId)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.TaskEachMember(groupTaskId);
             }
             catch (Exception ex)
             {

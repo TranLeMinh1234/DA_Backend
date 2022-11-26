@@ -24,7 +24,7 @@ namespace BL.Business
         private IDLRole _iDLRole;
         private IBLTemplateCustom _iBLTemplateCustom;
 
-        public BLGroupTask(IBLTemplateCustom iBLTemplateCustom, IDLRole iDLRole, IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager,IBLNotification iBLNotification,IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
+        public BLGroupTask(IBLTemplateCustom iBLTemplateCustom, IDLRole iDLRole, IBLTask iBLTask, WebsocketConnectionManager websocketConnectionManager, IBLNotification iBLNotification, IDLGroupTask iDLGroupTask, ContextRequest contextRequest) : base(iDLGroupTask, contextRequest)
         {
             _iDLGroupTask = iDLGroupTask;
             _contextRequest = contextRequest;
@@ -168,7 +168,7 @@ namespace BL.Business
                 }
 
                 foreach (var notification in listNotification)
-                { 
+                {
                     System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
                 }
             }
@@ -225,7 +225,7 @@ namespace BL.Business
         }
 
         public int DeleteMember(string email, Guid groupTaskId, string nameGroupTask) {
-            var result = _iDLGroupTask.DeleteMember(email,groupTaskId,nameGroupTask);
+            var result = _iDLGroupTask.DeleteMember(email, groupTaskId, nameGroupTask);
             if (result > 0)
             {
                 Notification notification = new Notification()
@@ -250,8 +250,8 @@ namespace BL.Business
         }
 
         public int UpdateRoleMember(string email, Guid groupTaskId, Guid roleId, string nameGroupTask)
-        { 
-            var result = _iDLGroupTask.UpdateRoleMember(email,groupTaskId,roleId);
+        {
+            var result = _iDLGroupTask.UpdateRoleMember(email, groupTaskId, roleId);
             if (result > 0)
             {
                 Role newRoleOfIUser = _iDLRole.GetById<Role>(roleId);
@@ -275,6 +275,17 @@ namespace BL.Business
                 System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(notification.NotifyForEmail, JsonConvert.SerializeObject(notification)));
             }
 
+            return result;
+        }
+
+        public List<int> GetGeneralCount(Guid groupTaskId)
+        {
+            var result = _iDLGroupTask.GetGeneralCount(groupTaskId);
+            return result;
+        }
+
+        public List<object> TaskEachMember(Guid groupTaskId) {
+            var result = _iDLGroupTask.TaskEachMember(groupTaskId);
             return result;
         }
     }
