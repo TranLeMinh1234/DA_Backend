@@ -20,5 +20,7 @@ namespace BL.Interface
         public TemplateGroupTask GetInfoTemplateOrigin(Guid templateReferenceId);
         public List<int> GetGeneralCount(Guid groupTaskId);
         public List<object> TaskEachMember(Guid groupTaskId);
+        public List<object> GetStatusExecuteTask(ParamGetStatusExecuteTask paramGetStatusExecuteTask);
+        public List<object> GetNumOfTaskPersonal(ParamGetStatusExecuteTask paramGetStatusExecuteTask);
     }
 }

@@ -20,5 +20,7 @@ namespace DL.Interface
         public TemplateGroupTask GetInfoTemplateOrigin(Guid templateReferenceId);
         public List<int> GetGeneralCount(Guid groupTaskId);
         public List<object> TaskEachMember(Guid groupTaskId);
+        public List<object> GetStatusExecuteTask(ParamGetStatusExecuteTask paramGetStatusExecuteTask);
+        public List<object> GetNumOfTaskPersonal(Guid groupTaskId, DateTime startTime, DateTime endTime, string email);
     }
 }

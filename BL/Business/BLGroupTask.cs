@@ -288,5 +288,15 @@ namespace BL.Business
             var result = _iDLGroupTask.TaskEachMember(groupTaskId);
             return result;
         }
+
+        public List<object> GetStatusExecuteTask(ParamGetStatusExecuteTask paramGetStatusExecuteTask) {
+            var result = _iDLGroupTask.GetStatusExecuteTask(paramGetStatusExecuteTask);
+            return result;
+        }
+
+        public List<object> GetNumOfTaskPersonal(ParamGetStatusExecuteTask paramGetStatusExecuteTask) {
+            var result = _iDLGroupTask.GetNumOfTaskPersonal((Guid)paramGetStatusExecuteTask.GroupTaskId, (DateTime)paramGetStatusExecuteTask.StartTime, (DateTime)paramGetStatusExecuteTask.EndTime, _contextRequest.GetEmailCurrentUser());
+            return result;
+        }
     }
 }

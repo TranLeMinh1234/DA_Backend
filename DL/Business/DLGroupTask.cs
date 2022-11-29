@@ -284,5 +284,67 @@ namespace DL.Business
 
             return listResult;
         }
+
+        public List<object> GetStatusExecuteTask(ParamGetStatusExecuteTask paramGetStatusExecuteTask) {
+            List<object> listResult = new List<object>();
+            var resultMultiple = _dbConnection.QueryMultiple("Proc_GetStatusExecuteTask", new
+            {
+                GroupTaskQueryId = paramGetStatusExecuteTask.GroupTaskId,
+                StartTimeQuery = paramGetStatusExecuteTask.StartTime,
+                EndTimeQuery = paramGetStatusExecuteTask.EndTime,
+                TimeNowQuery = DateTime.Now
+            }, commandType: System.Data.CommandType.StoredProcedure);
+
+            var listTotal = resultMultiple.Read<dynamic>().AsList();
+            var listTaskOverProgess = resultMultiple.Read<dynamic>().AsList();
+            var listTaskLateDeadline = resultMultiple.Read<dynamic>().AsList();
+            var listTaskNeedDone = resultMultiple.Read<dynamic>().AsList();
+
+            listTotal.Sort((before, after) => {
+                if (before.TotalTask > after.TotalTask)
+                {
+                    return -1;
+                }
+                else if (before.TotalTask < after.TotalTask)
+                {
+                    return 1;
+                }
+                else
+                    return 0;
+            });
+
+            foreach (var total in listTotal)
+            {
+                var numOfTaskOverProgess = listTaskOverProgess.Find(x => x.Email == total.Email)?.TotalTaskOverProgess;
+                var numOfTaskLateDeadline = listTaskLateDeadline.Find(x => x.Email == total.Email)?.TotalTaskLateDeadline;
+                var numOfTaskNeedDone = listTaskNeedDone.Find(x => x.Email == total.Email)?.TotalTaskNeedDone;
+
+                listResult.Add(new
+                {
+                    Email = total.Email,
+                    UserName = total.UserName,
+                    Total = total.TotalTask,
+                    TotalTaskOverProgess = numOfTaskOverProgess != null ? numOfTaskOverProgess : 0,
+                    TotalTaskLateDeadline = numOfTaskLateDeadline != null ? numOfTaskLateDeadline : 0,
+                    TotalTaskNeedDone = numOfTaskNeedDone != null ? numOfTaskNeedDone : 0,
+                    FileAvatarName = total.FileAvatarName
+                });
+            }
+
+            return listResult;
+        }
+
+        public List<object> GetNumOfTaskPersonal(Guid groupTaskId, DateTime startTime, DateTime endTime, string email) {
+            List<object> listResult = new List<object>();
+            var result = _dbConnection.Query<object>("Proc_GetNumOfTaskPersonal", new
+            {
+                GroupTaskQueryId = groupTaskId,
+                StartTimeQuery = startTime,
+                EndTimeQuery = endTime,
+                EmailQuery = email
+            }, commandType: System.Data.CommandType.StoredProcedure).AsList();
+
+            return result;
+        }
     }
 }

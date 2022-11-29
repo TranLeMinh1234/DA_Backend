@@ -186,5 +186,35 @@ namespace DA_Backend.Controllers
             }
             return Ok(serviceResult);
         }
+
+        [HttpPost("getstatusexecutetask")]
+        public IActionResult GetStatusExecuteTask(ParamGetStatusExecuteTask paramGetStatusExecuteTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.GetStatusExecuteTask(paramGetStatusExecuteTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
+
+        [HttpPost("numoftaskpersonal")]
+        public IActionResult GetNumOfTaskPersonal(ParamGetStatusExecuteTask paramGetStatusExecuteTask)
+        {
+            ServiceResult serviceResult = new ServiceResult();
+            try
+            {
+                serviceResult.Data = _iBLGroupTask.GetNumOfTaskPersonal(paramGetStatusExecuteTask);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine(ex);
+            }
+            return Ok(serviceResult);
+        }
     }
 }
