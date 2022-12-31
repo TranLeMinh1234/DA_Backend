@@ -10,6 +10,7 @@ using Service;
 using Service.Interface;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using static ClassModel.Enumeration;
 
@@ -286,6 +287,22 @@ namespace BL.Business
 
         public int UpdateTaskProcessBatch(List<ParamUpdateTaskProcessBatch> listParam) {
             var result = _iDLTask.UpdateTaskProcessBatch(listParam);
+            List<string> sentEmails = GetEmailUserJoined((Guid)listParam.ElementAt(0).GroupTaskId);
+            if (sentEmails?.Count > 0)
+            {
+                foreach (var email in sentEmails)
+                {
+                    if (email != _contextRequest.GetEmailCurrentUser())
+                    {
+                        Notification notificationReload = new Notification()
+                        {
+                            TypeNoti = (int)EnumTypeNotification.ReloadGroupTask
+                        };
+                        System.Threading.Tasks.Task.Run(() => _websocketConnectionManager.SendMessageToUser(email, JsonConvert.SerializeObject(notificationReload)));
+                    }
+                }
+            }
+
             return result;
         }
 

@@ -9,5 +9,6 @@ namespace ClassModel.ParamApi
         public Guid? TaskId { get; set; }
         public Guid? ProcessId { get; set; }
         public int? SortOrder { get; set; }
+        public Guid? GroupTaskId { get; set; }
     }
 }

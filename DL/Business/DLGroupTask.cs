@@ -297,7 +297,7 @@ namespace DL.Business
 
             var listTotal = resultMultiple.Read<dynamic>().AsList();
             var listTaskOverProgess = resultMultiple.Read<dynamic>().AsList();
-            var listTaskLateDeadline = resultMultiple.Read<dynamic>().AsList();
+            var listTaskLateDeadline = resultMultiple.Read<dynamic>().AsList(); 
             var listTaskNeedDone = resultMultiple.Read<dynamic>().AsList();
 
             listTotal.Sort((before, after) => {
