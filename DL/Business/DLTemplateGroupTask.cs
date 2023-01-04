@@ -89,5 +89,14 @@ namespace DL.Business
             var result = _dbConnection.Execute(sqlBuilder.ToString(), param, commandType: CommandType.Text);
             return result;
         }
+
+        public int DeleteProcess(Guid processId, int sortOrder)
+        {
+            Dictionary<string, object> param = new Dictionary<string, object>();
+            param.Add("ProcessIdQuery", processId);
+            param.Add("SortOrderQuery", sortOrder);
+            var result = _dbConnection.Execute("Proc_DeleteProcess", param, commandType: CommandType.StoredProcedure);
+            return result;
+        }
     }
 }

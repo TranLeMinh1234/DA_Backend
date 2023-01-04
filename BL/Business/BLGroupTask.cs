@@ -51,6 +51,7 @@ namespace BL.Business
             {
                 groupTask.TemplateReferenceId = templateCustom.TemplateCustomId;
                 Guid? newIdGroupTask = _iDLGroupTask.Insert(groupTask);
+                groupTask.GroupTaskId = newIdGroupTask;
 
                 if (newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Group || newIdGroupTask != null && groupTask.TypeGroupTask == (int)EnumTypeGroupTask.Personal)
                 {

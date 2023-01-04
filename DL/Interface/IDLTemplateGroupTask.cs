@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DL.Interface
 {
-    public interface IDLTemplateGroupTask: IDLBase
+    public interface IDLTemplateGroupTask : IDLBase
     {
         public List<TemplateGroupTask> GetAllTemplate(string emailQuery);
         public int DeleteCustom(Guid templateId);
@@ -16,5 +16,7 @@ namespace DL.Interface
         public bool CheckExistsTaskInProcess(Guid processId);
 
         public int UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam);
+
+        public int DeleteProcess(Guid processId, int sortOrder);
     }
 }

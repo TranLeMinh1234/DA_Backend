@@ -20,7 +20,7 @@ namespace BL.Interface
 
         public ClassModel.TaskRelate.Process InsertProcess(ClassModel.TaskRelate.Process process);
 
-        public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId);
+        public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId, int sortOrder);
 
         public int UpdateSortOrderProcesses(List<ParamUpdateSortOrderProcess> listParam);
     }

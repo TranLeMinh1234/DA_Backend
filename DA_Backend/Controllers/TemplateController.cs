@@ -99,13 +99,13 @@ namespace DA_Backend.Controllers
             return Ok(serviceResult);
         }
 
-        [HttpDelete("process/{processId}/{columnSettingId}")]
-        public IActionResult DeleteProcess(Guid processId, Guid columnSettingId)
+        [HttpDelete("process/{processId}/{columnSettingId}/{sortOrder}")]
+        public IActionResult DeleteProcess(Guid processId, Guid columnSettingId, int sortOrder)
         {
             ServiceResult serviceResult = new ServiceResult();
             try
             {
-                serviceResult.Data = _iBLTemplateGroupTask.DeleteProcess(processId, columnSettingId);
+                serviceResult.Data = _iBLTemplateGroupTask.DeleteProcess(processId, columnSettingId, sortOrder);
             }
             catch (Exception ex)
             {

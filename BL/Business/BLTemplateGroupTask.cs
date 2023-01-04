@@ -87,7 +87,7 @@ namespace BL.Business
             return process;
         }
 
-        public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId) {
+        public ServiceResult DeleteProcess(Guid processId, Guid columnSettingId, int sortOrder) {
             ServiceResult serviceResult = new ServiceResult();
             bool isExistTaskInProcess = _iDLTemplateGroupTask.CheckExistsTaskInProcess(processId);
 
@@ -98,8 +98,8 @@ namespace BL.Business
             }
             else
             {
-                _iDLTemplateGroupTask.Delete<Process>(processId);
-                _iDLTemplateGroupTask.Delete<Process>(columnSettingId);
+                _iDLTemplateGroupTask.DeleteProcess(processId, sortOrder);
+                _iDLTemplateGroupTask.Delete<ColumnSetting>(columnSettingId);
             }
             return serviceResult;
         }
