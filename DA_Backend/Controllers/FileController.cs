@@ -29,7 +29,7 @@ namespace DA_Backend.Controllers
             _contextRequest = contextRequest;
         }
 
-        private string fileExtensionAllow = ".jpg,.xlsx,.png,.jfif";
+        private string fileExtensionAllow = ".jpg,.xlsx,.png,.jfif,.docx,.doc,.pptx,.xml,.pdf,.txt,.xlsx,.xlt";
         private string defautPathFileSave = "\\FileUpload";
 
         [AllowAnonymous]
